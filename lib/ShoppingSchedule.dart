@@ -19,9 +19,18 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   ShoppingScheduleState(){
-    ShoppingListService service =  ShoppingListService();
-    this._suggestions = service.loadShoppingDays();
   }
+
+  @override
+  void initState() {
+    ShoppingListService service =  ShoppingListService();
+    service.loadShoppingDays().then((result) =>
+        setState(() {
+            this._suggestions = result;
+        })
+    );
+  }
+
 
   Widget _buildSuggestions() {
     return ListView.separated(
@@ -61,6 +70,11 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (_suggestions == null) {
+      // This is what we show while we're loading
+      return new Container();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Shopping day'),

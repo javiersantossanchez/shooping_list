@@ -22,11 +22,20 @@ class ShoppingListItemaaa extends State<ShoppingGroup> {
 
   List<ShoppingListItem> _suggestions ;
   final _biggerFont = const TextStyle(fontSize: 18.0);
-
+  int id;
 
   ShoppingListItemaaa(int id){
+    this.id = id;
+  }
+
+  @override
+  void initState() {
     ShoppingListService service =  ShoppingListService();
-    this._suggestions = service.loadShoppingList(id);
+    service.loadShoppingList(this.id).then((result) =>
+        setState(() {
+          this._suggestions = result;
+        })
+    );
   }
 
   Widget _buildSuggestions() {
@@ -44,6 +53,8 @@ class ShoppingListItemaaa extends State<ShoppingGroup> {
 
   // #docregion _buildRow
   Widget _buildRow(ShoppingListItem pair, BuildContext context) {
+
+
     return ListTile(
       title: Text(
         pair.description,
@@ -61,8 +72,6 @@ class ShoppingListItemaaa extends State<ShoppingGroup> {
 
       },
     );
-
-
   }
 
 
@@ -70,6 +79,10 @@ class ShoppingListItemaaa extends State<ShoppingGroup> {
 
   @override
   Widget build(BuildContext context) {
+    if (_suggestions == null) {
+      // This is what we show while we're loading
+      return new Container();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Shopping day'),
