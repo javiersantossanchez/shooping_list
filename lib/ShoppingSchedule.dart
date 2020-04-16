@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:shoopinglist/ShoopingGroup.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
+import 'ShoppingScheduleForm.dart';
 import 'dtos/ShoppingScheduleItem.dart';
 
 class ShoppingScheduleWidget extends StatefulWidget {
@@ -80,6 +81,16 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
         title: Text('Shopping day'),
       ),
       body: _buildSuggestions(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            new MaterialPageRoute(builder: (ctxt) =>  ShoppingScheduleFormWidget()),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+
     );
   }
 

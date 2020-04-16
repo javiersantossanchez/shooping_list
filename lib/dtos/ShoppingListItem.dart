@@ -8,4 +8,5 @@ class ShoppingListItem  {
     this.description = description;
     this.ready = false;
   }
+
 }

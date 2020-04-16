@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shoopinglist/dtos/ShoppingListItem.dart';
 import 'dart:io';
@@ -7,6 +8,8 @@ import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart'; //to convert json 
 
 class FileDataProvider {
   static final FileDataProvider _instance = new FileDataProvider._internal();
+
+  List<ShoppingScheduleItem>  _info;
 
   factory FileDataProvider() {
     return _instance;
@@ -27,46 +30,63 @@ class FileDataProvider {
 
   Future<List<ShoppingScheduleItem>> getScheduler() async {
     final file = await _localFile;
-    // Write the file
-    Map<String, Object> content = {
-      "data": [
-        {
-          "shoppingDate": "20120227",
-          "id":1,
-          "shoppingList": [
-            {"description": "Arroz", "ready": false},
-            {"description": "Pasta", "ready": true}
-          ]
-        },
-        {
-          "shoppingDate": "20120224",
-          "id":2,
-          "shoppingList": [
-            {"description": "Queso", "ready": false},
-            {"description": "Atun", "ready": true}
-          ]
-        }
-      ]
-    };
-    file.writeAsStringSync(json.encode(content));
-    String contents = await file.readAsString();
-    Map<String, Object> jsonFileContent = json.decode(contents);
-    List<dynamic> ddd =  jsonFileContent["data"];
-    List<ShoppingScheduleItem>  list = ddd.map((item) => ShoppingScheduleItem(item["id"], DateTime.parse(item["shoppingDate"])) ).toList();
-    return list;
-  }
 
-  Future<List<ShoppingListItem>> getScheduler1111(int id) async {
-      final file = await _localFile;
-      // Read the file
+    if(_info == null) {
+        this.update();
+
+      //file.writeAsStringSync(json.encode(content));
       String contents = await file.readAsString();
 
-      Map<String, Object> jsonFileContent = json.decode(contents);
-      List<dynamic> ddd =  jsonFileContent["data"];
-      dynamic v =  ddd.firstWhere((item) => item["id"] == id);
-      List<dynamic> sssd = v["shoppingList"];
-      List<ShoppingListItem> result = sssd.map((item) => ShoppingListItem(item["description"])).toList();
-      // Returning the contents of the file
-      return result;
+      List<dynamic> jsonFileContent = json.decode(contents);
+
+      _info = jsonFileContent.map((item) {
+
+        List<dynamic> sssd = item["shoppingList"];
+        List<ShoppingListItem> result = sssd.map((item) => ShoppingListItem(item["description"])).toList();
+        // Returning the contents of the file
+
+        return ShoppingScheduleItem(item["id"],
+              DateTime.parse(item["shoppingDate"]),
+            result
+          );
+          }
+      ).toList();
+    }
+      return _info;
+    }
+
+    Future<List<ShoppingListItem>> getScheduler1111(int id) async {
+
+      ShoppingScheduleItem v =  _info.firstWhere((item) => item.id == id);
+
+      return v.shoppingList;
+    }
+
+  Future<void> updateddd(ShoppingScheduleItem va) async{
+    ShoppingListItem litsItem = new ShoppingListItem("prueba");
+    List<ShoppingListItem> list = new List();
+    list.add(litsItem);
+    va.shoppingList.add(litsItem);
+    va.id = _info.length +1;
+    this._info.add( va);
+
+    final file = await _localFile;
+    file.writeAsStringSync(json.encode(this._info));
   }
+
+    void update() async{
+      ShoppingListItem litsItem = new ShoppingListItem("prueba");
+      List<ShoppingListItem> list = new List();
+      list.add(litsItem);
+      this._info = new List();
+      this._info.add( new ShoppingScheduleItem(4, DateTime.now(), list));
+
+       final file = await _localFile;
+       bool c = await file.exists();
+       if( !c) {
+         file.writeAsStringSync(json.encode(this._info));
+       }
+    }
+
+
 }

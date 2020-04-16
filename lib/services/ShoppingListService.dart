@@ -20,4 +20,8 @@ class ShoppingListService {
     return this.dataProvider.getScheduler1111(id);
   }
 
+  Future<void> addNewItem(ShoppingScheduleItem va){
+    return this.dataProvider.updateddd(va);
+  }
+
 }
