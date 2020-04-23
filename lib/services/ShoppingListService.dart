@@ -17,12 +17,9 @@ class ShoppingListService {
   }
 
   Future<List<ShoppingListItem>> loadShoppingList(int id){
-    return this.dataProvider.getScheduler1111(id);
+    return this.dataProvider.getShoppingList(id);
   }
 
-  Future<void> addNewItem(ShoppingScheduleItem va){
-    return this.dataProvider.updateddd(va);
-  }
 
   List<ShoppingListItem> getDefaultShoppingList(){
     List<ShoppingListItem> listToReturn = new List();
@@ -67,6 +64,10 @@ class ShoppingListService {
     listToReturn.add(new ShoppingListItem("Toallitas clorox"));
     listToReturn.add(new ShoppingListItem("Desinfectante"));
     return listToReturn;
+  }
+
+  void createSchuelde(ShoppingScheduleItem newShoppingList) {
+    dataProvider.createNewShoppingList(newShoppingList);
   }
 
 }

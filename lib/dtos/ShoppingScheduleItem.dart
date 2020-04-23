@@ -15,7 +15,6 @@ class ShoppingScheduleItem  {
     this.shoppingList = shoppingList;
   }
 
-
   Map<String, dynamic> toJson() =>
       {
         'shoppingDate': shoppingDate.toIso8601String(),

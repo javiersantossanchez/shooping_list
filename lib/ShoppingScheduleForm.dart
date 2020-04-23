@@ -12,18 +12,29 @@ class ShoppingScheduleFormWidget extends StatefulWidget {
 }
 
 class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
-  DateTime selectedDate ;//= DateTime.now();
+  DateTime selectedDate; //= DateTime.now();
 
   List<ShoppingListItem> _items;
 
+  List<ShoppingListItem> _selectedItems;
+
+  ShoppingScheduleItem scheduleItem;
+
   final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  void saveSchedule (){
+    scheduleItem = new ShoppingScheduleItem(null, selectedDate, _selectedItems);
+    ShoppingListService service = ShoppingListService();
+    service.createSchuelde(scheduleItem);
+  }
+
 
   @override
   void initState() {
-    ShoppingListService service =  ShoppingListService();
-        setState(() {
-          this._items = service.getDefaultShoppingList();
-        });
+    ShoppingListService service = ShoppingListService();
+    setState(() {
+      this._items = service.getDefaultShoppingList();
+    });
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -35,15 +46,15 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
+
       });
   }
-
 
   Widget _buildSuggestions() {
     return ListView.separated(
         separatorBuilder: (context, index) => Divider(
-          color: Colors.blue,
-        ),
+              color: Colors.blue,
+            ),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         padding: const EdgeInsets.all(16.0),
@@ -53,7 +64,6 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
         });
   }
 
-
   // #docregion _buildRow
   Widget _buildRow(ShoppingListItem pair, BuildContext context) {
     return ListTile(
@@ -62,23 +72,26 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
         style: _biggerFont,
       ),
       trailing: Icon(
-        pair.ready? Icons.check_circle: Icons.radio_button_unchecked ,
-        color: Colors.blue ,
+        pair.ready ? Icons.check_circle : Icons.radio_button_unchecked,
+        color: Colors.blue,
         size: 30,
       ),
       onTap: () {
         setState(() {
-          pair.ready = !pair.ready ;
+          pair.ready = !pair.ready;
+          if(_selectedItems == null){
+            _selectedItems = new List();
+          }
+          if(pair.ready){
+            _selectedItems.add(pair);
+          }else{
+            _selectedItems.remove(pair);
+          }
+
         });
       },
     );
   }
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +103,10 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
       appBar: AppBar(
         title: Text('DateTime Picker'),
       ),
-      body:
-      Column(
-          children: <Widget>[
-            RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0)),
+      body: Column(children: <Widget>[
+        RaisedButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
           elevation: 4.0,
           onPressed: () => _selectDate(context),
           child: Container(
@@ -115,7 +126,10 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
                             color: Colors.teal,
                           ),
                           Text(
-                            this.selectedDate == null ? "Not set" : new DateFormat.yMMMd().format(this.selectedDate),
+                            this.selectedDate == null
+                                ? "Not set"
+                                : new DateFormat.yMMMd()
+                                    .format(this.selectedDate),
                             style: TextStyle(
                                 color: Colors.teal,
                                 fontWeight: FontWeight.bold,
@@ -127,7 +141,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
                   ],
                 ),
                 Text(
-                  "  Change",
+                  "  Change22222",
                   style: TextStyle(
                       color: Colors.teal,
                       fontWeight: FontWeight.bold,
@@ -135,121 +149,22 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
                 ),
               ],
             ),
-
           ),
-
           color: Colors.white,
         ),
-            new Expanded(
-              child:
-              _buildSuggestions(),)
-      //      ,
-          ]
-      ),
-
-    );
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  @override
-  Widget buildOld(BuildContext context) {
-    if (_items == null) {
-      // This is what we show while we're loading
-      return new Container();
-    }
-//_buildSuggestions(),
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('DateTime Picker'),
-      ),
-      body:
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0)),
-                elevation: 4.0,
-                onPressed: () => _selectDate(context),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 50.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.date_range,
-                                  size: 18.0,
-                                  color: Colors.teal,
-                                ),
-                                Text(
-                                    this.selectedDate == null ? "Not set" : new DateFormat.yMMMd().format(this.selectedDate),
-                                  style: TextStyle(
-                                      color: Colors.teal,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      Text(
-                        "  Change",
-                        style: TextStyle(
-                            color: Colors.teal,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0),
-                      ),
-                    ],
-                  ),
-                ),
-                color: Colors.white,
-              ),
-      RaisedButton(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0)),
-        elevation: 4.0,
-        onPressed: (){
-          ShoppingListService service =  ShoppingListService();
-          service.addNewItem(new ShoppingScheduleItem(0, this.selectedDate, new List()));
-          Navigator.pop(context);
-        },
-      ),
-_buildSuggestions(),
-            ],
-          ),
+        new Expanded(
+          child: _buildSuggestions(),
         ),
-
-      ),
+    RaisedButton(
+      onPressed: () => saveSchedule(),
+        child: Text(
+        'Save',
+        ),
+    )
+        //      ,)
+      ]),
     );
   }
+
 
 }

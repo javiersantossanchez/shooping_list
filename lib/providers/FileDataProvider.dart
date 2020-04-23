@@ -32,7 +32,7 @@ class FileDataProvider {
     final file = await _localFile;
 
     if(_info == null) {
-        this.update();
+        //this.update();
 
       //file.writeAsStringSync(json.encode(content));
       String contents = await file.readAsString();
@@ -55,13 +55,31 @@ class FileDataProvider {
       return _info;
     }
 
-    Future<List<ShoppingListItem>> getScheduler1111(int id) async {
+    Future<List<ShoppingListItem>> getShoppingList(int id) async {
 
       ShoppingScheduleItem v =  _info.firstWhere((item) => item.id == id);
 
       return v.shoppingList;
     }
 
+
+    Future<void> createNewShoppingList(ShoppingScheduleItem newShoppingList) async{
+      newShoppingList.id = _info.length +1;
+      this._info.add( newShoppingList );
+
+      final file = await _localFile;
+      file.writeAsStringSync(json.encode(this._info));
+    }
+
+
+
+
+
+
+
+
+
+  /** code to be use as guide for IO operations
   Future<void> updateddd(ShoppingScheduleItem va) async{
     ShoppingListItem litsItem = new ShoppingListItem("prueba");
     List<ShoppingListItem> list = new List();
@@ -87,6 +105,6 @@ class FileDataProvider {
          file.writeAsStringSync(json.encode(this._info));
        }
     }
-
+   */
 
 }
