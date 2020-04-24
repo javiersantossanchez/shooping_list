@@ -3,7 +3,7 @@ import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/providers/FileParser.dart';
 
 void main() {
-  test('Counter value should be incremented', () {
+  test('Parser the text in the right way', () {
       FileParser parser = new FileParser();
 
       String text = '[{'
@@ -22,4 +22,72 @@ void main() {
       expect(allValid, true);
 
   });
+
+  test('Parser the text without shoppingList property', () {
+      FileParser parser = new FileParser();
+      String text = '[{'
+          '"shoppingDate": "2020-04-15T18:40:41.910651",'
+          '"id": 1'
+          '}]';
+
+      List<ShoppingScheduleItem> result = parser.parser(text);
+      expect(result, null);
+
+  });
+
+  test('Parser the text without shoppingDate property', () {
+      FileParser parser = new FileParser();
+
+      String text = '[{'
+          '"id": 1,'
+          '"shoppingList": [{"description": "Item 1","ready": false},{"description": "Item 2","ready": false}]'
+          '}]';
+
+      List<ShoppingScheduleItem> result = parser.parser(text);
+      expect(result, null);
+
+  });
+
+  test('Parser the text with invalid format on shoppingDate property', () {
+      FileParser parser = new FileParser();
+
+      String text = '[{'
+          '"shoppingDate": "2020-0",'
+          '"id": 1,'
+          '"shoppingList": [{"description": "Item 1","ready": false},{"description": "Item 2","ready": false}]'
+          '}]';
+
+      List<ShoppingScheduleItem> result = parser.parser(text);
+      expect(result, null);
+
+  });
+
+  test('Parser the text with invalid format', () {
+      FileParser parser = new FileParser();
+
+      String text = '[{'
+          '"shoppingDate": "2020-0",'
+          '"id": 1,'
+          '"shoppingList": ['
+          '}]';
+
+      List<ShoppingScheduleItem> result = parser.parser(text);
+      expect(result, null);
+
+  });
+
+  test('Parser with a empty string', () {
+      FileParser parser = new FileParser();
+      String text = '';
+      List<ShoppingScheduleItem> result = parser.parser(text);
+      expect(result, null);
+  });
+
+  test('Parser with null as parameter', () {
+      FileParser parser = new FileParser();
+      String text;
+      List<ShoppingScheduleItem> result = parser.parser(text);
+      expect(result, null);
+  });
+
 }
