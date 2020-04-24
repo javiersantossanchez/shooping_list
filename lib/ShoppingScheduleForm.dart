@@ -26,6 +26,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
     scheduleItem = new ShoppingScheduleItem(null, selectedDate, _selectedItems);
     ShoppingListService service = ShoppingListService();
     service.createSchuelde(scheduleItem);
+
   }
 
 
@@ -156,7 +157,12 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
           child: _buildSuggestions(),
         ),
     RaisedButton(
-      onPressed: () => saveSchedule(),
+      onPressed: () {
+          setState(() {
+              saveSchedule();
+              Navigator.pop(context,);
+          });
+      },
         child: Text(
         'Save',
         ),

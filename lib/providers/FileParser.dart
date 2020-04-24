@@ -6,32 +6,32 @@ import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 
 class FileParser {
 
-  final shoppingItemListKey = "shoppingList";
+  final _shoppingItemListKey = "shoppingList";
 
-  final shoppingScheduleDateKey = "shoppingDate";
+  final _shoppingScheduleDateKey = "shoppingDate";
 
-  final shoppingItemDescriptionKey = "description";
+  final _shoppingItemDescriptionKey = "description";
 
-  final shoppingScheduleIdKey = "id";
+  final _shoppingScheduleIdKey = "id";
 
   ShoppingScheduleItem _parse(dynamic item) {
     DateTime date;
-    if(item[shoppingScheduleDateKey] == null){
+    if(item[_shoppingScheduleDateKey] == null){
       print("The shoppingDate property is no present");
       return null;
     }
     try {
-      date = DateTime.parse(item[shoppingScheduleDateKey]);
+      date = DateTime.parse(item[_shoppingScheduleDateKey]);
     } on FormatException catch(exception){
       print("Date has an invalid format $exception");
       return null;
     }
-    List<dynamic> shoppingList = item[shoppingItemListKey];
+    List<dynamic> shoppingList = item[_shoppingItemListKey];
     if(shoppingList == null){
       return null;
     }
-    List<ShoppingListItem> listItems = shoppingList.map((item) => ShoppingListItem(item[shoppingItemDescriptionKey])).toList();
-    return ShoppingScheduleItem(item[shoppingScheduleIdKey], date, listItems);
+    List<ShoppingListItem> listItems = shoppingList.map((item) => ShoppingListItem(item[_shoppingItemDescriptionKey])).toList();
+    return ShoppingScheduleItem(item[_shoppingScheduleIdKey], date, listItems);
   }
 
   List<ShoppingScheduleItem> parser (String text) {

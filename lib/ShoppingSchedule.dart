@@ -15,7 +15,7 @@ class ShoppingScheduleWidget extends StatefulWidget {
 
 class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
 
-  List<ShoppingScheduleItem> _suggestions ;
+  List<ShoppingScheduleItem> _suggestions = new List();
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
@@ -27,7 +27,9 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
     ShoppingListService service =  ShoppingListService();
     service.loadShoppingDays().then((result) =>
         setState(() {
-            this._suggestions = result;
+            if(result != null) {
+              this._suggestions.addAll(result);
+            }
         })
     );
   }
@@ -86,7 +88,19 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
           Navigator.push(
             context,
             new MaterialPageRoute(builder: (ctxt) =>  ShoppingScheduleFormWidget()),
+          ).then((result)  {
+
+              ShoppingListService service =  ShoppingListService();
+          service.loadShoppingDays().then((result) =>
+              setState(() {
+                if(result != null) {
+                  this._suggestions.addAll(result);
+                }
+              })
           );
+
+
+          });
         },
         child: Icon(Icons.add),
       ),

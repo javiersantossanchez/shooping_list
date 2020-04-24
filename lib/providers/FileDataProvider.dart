@@ -9,7 +9,9 @@ import 'package:shoopinglist/providers/FileParser.dart'; //to convert json to ma
 class FileDataProvider {
   static final FileDataProvider _instance = new FileDataProvider._internal();
 
-  List<ShoppingScheduleItem> _info;
+  final String _fileName ="shopping_list.txt";
+
+  List<ShoppingScheduleItem> _info = new List();
 
   factory FileDataProvider() {
     return _instance;
@@ -25,7 +27,7 @@ class FileDataProvider {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/counter.txt');
+    return File('$path/$_fileName');
   }
 
 
@@ -33,11 +35,16 @@ class FileDataProvider {
   Future<List<ShoppingScheduleItem>> getScheduler() async {
     final file = await _localFile;
 
-    if (_info == null) {
+    if (_info == null || _info.isEmpty) {
+      if( !file.existsSync() ){
+        file.createSync();
+      }
       String contents = await file.readAsString();
-    FileParser parser = new FileParser();
-    _info = parser.parser(contents);
-
+      FileParser parser = new FileParser();
+      List<ShoppingScheduleItem> itemsFromFile = parser.parser(contents);
+      if(itemsFromFile != null) {
+        _info.addAll(itemsFromFile);
+      }
     }
     return _info;
   }
