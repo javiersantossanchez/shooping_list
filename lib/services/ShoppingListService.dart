@@ -13,8 +13,7 @@ class ShoppingListService {
       return dataProvider.getScheduler();
   }
 
-  ShoppingListService(){
-  }
+  ShoppingListService();
 
   Future<List<ShoppingListItem>> loadShoppingList(int id){
     return this.dataProvider.getShoppingList(id);
@@ -68,6 +67,10 @@ class ShoppingListService {
 
   void createSchuelde(ShoppingScheduleItem newShoppingList) {
     dataProvider.createNewShoppingList(newShoppingList);
+  }
+
+  void deleteSchuelde(ShoppingScheduleItem shoppingListToDelete) {
+    dataProvider.deleteShoppingList(shoppingListToDelete);
   }
 
 }

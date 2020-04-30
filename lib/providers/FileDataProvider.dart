@@ -63,4 +63,10 @@ class FileDataProvider {
     final file = await _localFile;
     file.writeAsStringSync(json.encode(this._info));
   }
+
+  Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
+    this._info.remove(shoppingListToDelete);
+    final file = await _localFile;
+    file.writeAsStringSync(json.encode(this._info));
+  }
 }

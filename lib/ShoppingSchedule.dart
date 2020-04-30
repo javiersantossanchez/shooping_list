@@ -12,41 +12,34 @@ class ShoppingScheduleWidget extends StatefulWidget {
   ShoppingScheduleState createState() => ShoppingScheduleState();
 }
 
-
 class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
-
   List<ShoppingScheduleItem> _suggestions = new List();
+
+  ShoppingListService _service = ShoppingListService();
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  ShoppingScheduleState(){
-  }
+  ShoppingScheduleState();
+
+
 
   @override
   void initState() {
-    ShoppingListService service =  ShoppingListService();
-    service.loadShoppingDays().then((result) =>
-        setState(() {
-            if(result != null) {
-              this._suggestions.addAll(result);
-            }
-        })
-    );
+    super.initState();
+    this.reloadState();
   }
-
 
   Widget _buildSuggestions() {
     return ListView.separated(
         separatorBuilder: (context, index) => Divider(
-          color: Colors.blue,
-        ),
+              color: Colors.blue,
+            ),
         padding: const EdgeInsets.all(16.0),
         itemCount: _suggestions.length,
         itemBuilder: /*1*/ (context, index) {
           return _buildRow(_suggestions[index], context);
         });
   }
-
 
   // #docregion _buildRow
   Widget _buildRow(ShoppingScheduleItem pair, BuildContext context) {
@@ -59,69 +52,71 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
         spacing: 12, // space between two icons
         children: <Widget>[
           IconButton(
-          icon:Icon(
-            Icons.arrow_forward_ios ,
-            color: Colors.blue ,
-            size: 30,
-          ),
-            onPressed: () {
-              setState(() {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute (builder: (ctxt) =>  ShoppingGroup(pair.id)),
-                );
-              });
-            },
+            icon: Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.blue,
+              size: 30,
+            ),
+            onPressed: () => onClickArrowForwardIcon(pair, context),
           ),
           IconButton(
-            icon:Icon(
-              Icons.delete ,
-              color: Colors.blue ,
-              size: 30,
-            )
+              icon: Icon(
+                Icons.delete,
+                color: Colors.blue,
+                size: 30,
+              ),
+              onPressed: () => clickOnDeleteIcon(pair),
           ),
         ],
       ),
-
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget mainWidget ;
     if (_suggestions == null) {
       // This is what we show while we're loading
-      return new Container();
+      mainWidget = Container();
+    }else {
+      mainWidget = Scaffold(
+        appBar: AppBar(
+          title: Text('Shopping day'),
+        ),
+        body: _buildSuggestions(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => this.onClickAddButton(context),
+          child: Icon(Icons.add),
+        ),
+      );
     }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Shopping day'),
-      ),
-      body: _buildSuggestions(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            new MaterialPageRoute(builder: (ctxt) =>  ShoppingScheduleFormWidget()),
-          ).then((result)  {
-
-              ShoppingListService service =  ShoppingListService();
-          service.loadShoppingDays().then((result) =>
-              setState(() {
-                if(result != null) {
-                  this._suggestions.addAll(result);
-                }
-              })
-          );
-          });
-        },
-        child: Icon(Icons.add),
-      ),
-
-    );
+    return mainWidget;
   }
 
+  void onClickAddButton(BuildContext context) {
+    ShoppingScheduleFormWidget widget = new ShoppingScheduleFormWidget();
+    MaterialPageRoute router =
+        new MaterialPageRoute(builder: (ctxt) => widget);
+    Navigator.push(context, router).then((result) => this.reloadState());
+  }
 
+  void onClickArrowForwardIcon(ShoppingScheduleItem selectedItem, BuildContext context){
+    ShoppingGroup widget = ShoppingGroup(selectedItem.id);
+    MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
+    setState(() => Navigator.push(context,router));
+  }
 
+  void clickOnDeleteIcon(ShoppingScheduleItem itemToDelete) {
+    _service.deleteSchuelde(itemToDelete);
+    this.reloadState();
+  }
 
+  void reloadState() {
+    _service.loadShoppingDays().then((result) => setState(() {
+          if (result != null) {
+            _suggestions.clear();
+            this._suggestions.addAll(result);
+          }
+    }));
+  }
 }
