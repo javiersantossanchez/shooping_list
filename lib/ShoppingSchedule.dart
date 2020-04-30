@@ -13,7 +13,7 @@ class ShoppingScheduleWidget extends StatefulWidget {
 }
 
 class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
-  List<ShoppingScheduleItem> _suggestions = new List();
+  List<ShoppingScheduleItem> _listItems = new List();
 
   ShoppingListService _service = ShoppingListService();
 
@@ -21,24 +21,20 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
 
   ShoppingScheduleState();
 
-
-
   @override
   void initState() {
     super.initState();
     this.reloadState();
   }
 
-  Widget _buildSuggestions() {
+  Widget _getListItemView() {
+    Divider div = new Divider(color: Colors.blue,);
     return ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-              color: Colors.blue,
-            ),
+        separatorBuilder: (context, index) => div,
         padding: const EdgeInsets.all(16.0),
-        itemCount: _suggestions.length,
-        itemBuilder: /*1*/ (context, index) {
-          return _buildRow(_suggestions[index], context);
-        });
+        itemCount: _listItems.length,
+        itemBuilder: (context, index) => _buildRow(_listItems[index], context),
+    );
   }
 
   // #docregion _buildRow
@@ -60,12 +56,12 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
             onPressed: () => onClickArrowForwardIcon(pair, context),
           ),
           IconButton(
-              icon: Icon(
-                Icons.delete,
-                color: Colors.blue,
-                size: 30,
-              ),
-              onPressed: () => clickOnDeleteIcon(pair),
+            icon: Icon(
+              Icons.delete,
+              color: Colors.blue,
+              size: 30,
+            ),
+            onPressed: () => clickOnDeleteIcon(pair),
           ),
         ],
       ),
@@ -74,19 +70,20 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget mainWidget ;
-    if (_suggestions == null) {
+    Widget mainWidget;
+    if (_listItems == null) {
       // This is what we show while we're loading
       mainWidget = Container();
-    }else {
+    } else {
       mainWidget = Scaffold(
         appBar: AppBar(
           title: Text('Shopping day'),
         ),
-        body: _buildSuggestions(),
+        body: _getListItemView(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => this.onClickAddButton(context),
           child: Icon(Icons.add),
+          onPressed: () => this.onClickAddButton(context),
+
         ),
       );
     }
@@ -95,15 +92,15 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
 
   void onClickAddButton(BuildContext context) {
     ShoppingScheduleFormWidget widget = new ShoppingScheduleFormWidget();
-    MaterialPageRoute router =
-        new MaterialPageRoute(builder: (ctxt) => widget);
+    MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
     Navigator.push(context, router).then((result) => this.reloadState());
   }
 
-  void onClickArrowForwardIcon(ShoppingScheduleItem selectedItem, BuildContext context){
+  void onClickArrowForwardIcon(
+      ShoppingScheduleItem selectedItem, BuildContext context) {
     ShoppingGroup widget = ShoppingGroup(selectedItem.id);
     MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
-    setState(() => Navigator.push(context,router));
+    setState(() => Navigator.push(context, router));
   }
 
   void clickOnDeleteIcon(ShoppingScheduleItem itemToDelete) {
@@ -114,9 +111,9 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
   void reloadState() {
     _service.loadShoppingDays().then((result) => setState(() {
           if (result != null) {
-            _suggestions.clear();
-            this._suggestions.addAll(result);
+            _listItems.clear();
+            this._listItems.addAll(result);
           }
-    }));
+        }));
   }
 }
