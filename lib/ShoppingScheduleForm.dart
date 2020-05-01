@@ -12,7 +12,7 @@ class ShoppingScheduleFormWidget extends StatefulWidget {
 }
 
 class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
-  DateTime selectedDate; //= DateTime.now();
+  DateTime selectedDate;
 
   List<ShoppingListItem> _items;
 
@@ -95,6 +95,24 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
     );
   }
 
+  Widget _getDatePickerView(){
+
+    return ListTile(
+      leading: Icon(
+        Icons.date_range,
+        size: 30.0,
+        color: Colors.blue,
+      ),
+      title: Text( this.selectedDate == null
+          ? "Not set"
+          : new DateFormat.yMMMd()
+          .format(this.selectedDate)),
+      subtitle: Text('Click to select a date'),
+      onTap: () => _selectDate(context),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     if (_items == null) {
@@ -106,54 +124,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
         title: Text('DateTime Picker'),
       ),
       body: Column(children: <Widget>[
-        RaisedButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          elevation: 4.0,
-          onPressed: () => _selectDate(context),
-          child: Container(
-            alignment: Alignment.center,
-            height: 50.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.date_range,
-                            size: 18.0,
-                            color: Colors.teal,
-                          ),
-                          Text(
-                            this.selectedDate == null
-                                ? "Not set"
-                                : new DateFormat.yMMMd()
-                                    .format(this.selectedDate),
-                            style: TextStyle(
-                                color: Colors.teal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Text(
-                  "  Change22222",
-                  style: TextStyle(
-                      color: Colors.teal,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0),
-                ),
-              ],
-            ),
-          ),
-          color: Colors.white,
-        ),
+        _getDatePickerView(),
         new Expanded(
           child: _buildSuggestions(),
         ),
