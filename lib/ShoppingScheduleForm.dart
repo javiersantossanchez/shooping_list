@@ -32,6 +32,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
 
   @override
   void initState() {
+    super.initState();
     ShoppingListService service = ShoppingListService();
     setState(() {
       this._items = service.getDefaultShoppingList();

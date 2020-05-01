@@ -30,6 +30,7 @@ class ShoppingListItemaaa extends State<ShoppingGroup> {
 
   @override
   void initState() {
+    super.initState();
     ShoppingListService service =  ShoppingListService();
     service.loadShoppingList(this.id).then((result) =>
         setState(() {

@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,116 +15,113 @@ class ShoppingScheduleWidget extends StatefulWidget {
   ShoppingScheduleState createState() => ShoppingScheduleState();
 }
 
-
 class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
+  List<ShoppingScheduleItem> _listItems = new List();
 
-  List<ShoppingScheduleItem> _suggestions = new List();
+  ShoppingListService _service = ShoppingListService();
 
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-
-  ShoppingScheduleState(){
-  }
+  ShoppingScheduleState();
 
   @override
   void initState() {
-    ShoppingListService service =  ShoppingListService();
-    service.loadShoppingDays().then((result) =>
-        setState(() {
-            if(result != null) {
-              this._suggestions.addAll(result);
-            }
-        })
+    super.initState();
+    this.reloadState();
+  }
+
+  Widget getViewDetailIconButton(ShoppingScheduleItem currentItem, BuildContext context){
+    return IconButton(
+      icon: Icon(
+        Icons.arrow_forward_ios,
+        color: Colors.blue,
+        size: 30,
+      ),
+      onPressed: () => onClickViewDetailIcon(currentItem, context),
     );
   }
 
-
-  Widget _buildSuggestions() {
-    return ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-          color: Colors.blue,
-        ),
-        padding: const EdgeInsets.all(16.0),
-        itemCount: _suggestions.length,
-        itemBuilder: /*1*/ (context, index) {
-          return _buildRow(_suggestions[index], context);
-        });
+  Widget getDeleteIconButton(ShoppingScheduleItem currentItem){
+    return IconButton(
+      icon: Icon(
+        Icons.delete,
+        color: Colors.blue,
+        size: 30,
+      ),
+      onPressed: () => onClickDeleteIcon(currentItem),
+    );
   }
 
-
-  // #docregion _buildRow
-  Widget _buildRow(ShoppingScheduleItem pair, BuildContext context) {
+  Widget _getItemView(ShoppingScheduleItem currentItem, BuildContext context) {
     return ListTile(
       title: Text(
-        new DateFormat.yMMMd().format(pair.shoppingDate),
-        style: _biggerFont,
+        new DateFormat.yMMMd().format(currentItem.shoppingDate),
       ),
       trailing: Wrap(
         spacing: 12, // space between two icons
         children: <Widget>[
-          IconButton(
-          icon:Icon(
-            Icons.arrow_forward_ios ,
-            color: Colors.blue ,
-            size: 30,
-          ),
-            onPressed: () {
-              setState(() {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute (builder: (ctxt) =>  ShoppingGroup(pair.id)),
-                );
-              });
-            },
-          ),
-          IconButton(
-            icon:Icon(
-              Icons.delete ,
-              color: Colors.blue ,
-              size: 30,
-            )
-          ),
+          getViewDetailIconButton(currentItem, context),
+          getDeleteIconButton(currentItem),
         ],
       ),
+    );
+  }
 
+  Widget _getListItemView() {
+    Divider div = new Divider(color: Colors.blue,);
+    return ListView.separated(
+      separatorBuilder: (context, index) => div,
+      padding: const EdgeInsets.all(16.0),
+      itemCount: _listItems.length,
+      itemBuilder: (context, index) => _getItemView(_listItems[index], context),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_suggestions == null) {
+    Widget mainWidget;
+    if (_listItems == null) {
       // This is what we show while we're loading
-      return new Container();
+      mainWidget = Container();
+    } else {
+      mainWidget = Scaffold(
+        appBar: AppBar(
+          title: Text('Shopping day'),
+        ),
+        body: _getListItemView(),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => this.onClickAddButton(context),
+        ),
+      );
     }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Shopping day'),
-      ),
-      body: _buildSuggestions(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            new MaterialPageRoute(builder: (ctxt) =>  ShoppingScheduleFormWidget()),
-          ).then((result)  {
-
-              ShoppingListService service =  ShoppingListService();
-          service.loadShoppingDays().then((result) =>
-              setState(() {
-                if(result != null) {
-                  this._suggestions.addAll(result);
-                }
-              })
-          );
-          });
-        },
-        child: Icon(Icons.add),
-      ),
-
-    );
+    return mainWidget;
   }
 
+  void onClickAddButton(BuildContext context) {
+    print('The user click on add button');
+    ShoppingScheduleFormWidget widget = new ShoppingScheduleFormWidget();
+    MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
+    Navigator.push(context, router).then((result) => this.reloadState());
+  }
 
+  void onClickViewDetailIcon(ShoppingScheduleItem selectedItem, BuildContext context) {
+    print('The user click on view detail icon');
+    ShoppingGroup widget = ShoppingGroup(selectedItem.id);
+    MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
+    setState(() => Navigator.push(context, router));
+  }
 
+  void onClickDeleteIcon(ShoppingScheduleItem itemToDelete) {
+    print('The user click on delete icon');
+    _service.deleteSchuelde(itemToDelete);
+    this.reloadState();
+  }
 
+  void reloadState() {
+    _service.loadShoppingDays().then((result) => setState(() {
+          if (result != null) {
+            _listItems.clear();
+            this._listItems.addAll(result);
+          }
+        }));
+  }
 }
