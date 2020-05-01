@@ -4,9 +4,11 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
-import 'package:shoopinglist/providers/FileParser.dart'; //to convert json to maps and vice versa
+import 'package:shoopinglist/providers/FileParser.dart';
 
-class FileDataProvider {
+import 'IFileDataProvider.dart'; //to convert json to maps and vice versa
+
+class FileDataProvider implements IFileDataProvider{
   static final FileDataProvider _instance = new FileDataProvider._internal();
 
   final String _fileName ="shopping_list.txt";

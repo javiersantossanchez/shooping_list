@@ -1,19 +1,23 @@
 import 'package:shoopinglist/dtos/ShoppingListItem.dart';
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/providers/FileDataProvider.dart';
+import 'dart:io' show Platform;
+
+import 'package:shoopinglist/providers/IFileDataProvider.dart';
 
 class ShoppingListService {
+
   List<ShoppingListItem> shoppingList;
 
   List<ShoppingScheduleItem> shoppingDates;
 
-  FileDataProvider dataProvider = new FileDataProvider();
+  IFileDataProvider dataProvider;
 
   Future<List<ShoppingScheduleItem>> loadShoppingDays(){
       return dataProvider.getScheduler();
   }
 
-  ShoppingListService();
+  ShoppingListService({IFileDataProvider dataProvider}): this.dataProvider = dataProvider ?? new FileDataProvider();
 
   Future<List<ShoppingListItem>> loadShoppingList(int id){
     return this.dataProvider.getShoppingList(id);
