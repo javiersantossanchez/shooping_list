@@ -52,18 +52,16 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
       });
   }
 
-  Widget _buildSuggestions() {
-    return ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-              color: Colors.blue,
-            ),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(16.0),
-        itemCount: _items.length,
-        itemBuilder: /*1*/ (context, index) {
-          return _buildRow(_items[index], context);
-        });
+  Widget _getListItemView() {
+    Divider div = new Divider(color: Colors.blue,);
+    return new Expanded(
+        child: ListView.separated(
+          separatorBuilder: (context, index) => div,
+          padding: const EdgeInsets.all(16.0),
+          itemCount: _items.length,
+          itemBuilder: (context, index) => _buildRow(_items[index], context)
+        )
+      );
   }
 
   // #docregion _buildRow
@@ -96,7 +94,6 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   }
 
   Widget _getDatePickerView(){
-
     return ListTile(
       leading: Icon(
         Icons.date_range,
@@ -125,17 +122,14 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
       ),
       body: Column(children: <Widget>[
         _getDatePickerView(),
-        new Expanded(
-          child: _buildSuggestions(),
-        ),
-    RaisedButton(
-      onPressed: () {
+        _getListItemView(),
+        RaisedButton(
+          onPressed: () {
           setState(() {
               saveSchedule();
               Navigator.pop(context,);
           });
-      },
-        child: Text(
+      }, child: Text(
         'Save',
         ),
     )
