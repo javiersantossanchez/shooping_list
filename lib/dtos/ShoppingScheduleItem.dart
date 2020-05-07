@@ -1,5 +1,5 @@
 
-import 'ShoppingListItem.dart';
+import 'ShoppingItem.dart';
 
 class ShoppingScheduleItem  {
 
@@ -7,7 +7,7 @@ class ShoppingScheduleItem  {
 
    final DateTime shoppingDate;
 
-   final List<ShoppingListItem> shoppingList;
+   final List<ShoppingItem> shoppingList;
 
 
   ShoppingScheduleItem._builder( ShoppingScheduleItemBuilder builder):
@@ -20,7 +20,7 @@ class ShoppingScheduleItem  {
       {
         'shoppingDate': shoppingDate.toIso8601String(),
         'id': this.id,
-        'shoppingList':this.shoppingList.map((item) => {"description": item.description, "ready": item.ready}).toList()
+        'shoppingList':this.shoppingList.map((item) => {"description": item.description, "ready": item.selected}).toList()
       };
 
 }
@@ -30,7 +30,7 @@ class ShoppingScheduleItemBuilder{
 
   DateTime _date;
 
-  List<ShoppingListItem> shoppingList;
+  List<ShoppingItem> shoppingList;
 
   int get id => _id;
 

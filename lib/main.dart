@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'ShoppingSchedule.dart';
+import 'widgets/ShoppingScheduleScreenWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Welcome to Flutter',
-      home: ShoppingScheduleWidget()
+      home: ShoppingScheduleScreenWidget()
     );
   }
 }

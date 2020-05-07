@@ -2,17 +2,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'ShoppingScheduleForm.dart';
-import 'ShoppingScheduleListViewWidget.dart';
+import '../ShoppingScheduleForm.dart';
+import 'ShoppingScheduleListWidget.dart';
 
-class ShoppingScheduleWidget extends StatefulWidget {
+class ShoppingScheduleScreenWidget extends StatefulWidget {
   @override
-  ShoppingScheduleState createState() => ShoppingScheduleState();
+  ShoppingScheduleScreenState createState() => ShoppingScheduleScreenState();
 }
 
-class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
-
-  ShoppingScheduleState();
+class ShoppingScheduleScreenState extends State<ShoppingScheduleScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
         appBar: AppBar(
           title: Text('Shopping day'),
         ),
-        body: ShoppingScheduleListViewWidget(),
+        body: ShoppingScheduleListWidget(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () => this.onClickAddButton(context),

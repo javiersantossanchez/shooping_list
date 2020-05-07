@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
 import 'dtos/ShoppingScheduleItem.dart';
@@ -14,9 +14,9 @@ class ShoppingScheduleFormWidget extends StatefulWidget {
 class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   DateTime selectedDate;
 
-  List<ShoppingListItem> _items;
+  List<ShoppingItem> _items;
 
-  List<ShoppingListItem> _selectedItems;
+  List<ShoppingItem> _selectedItems;
 
   ShoppingScheduleItem scheduleItem;
 
@@ -64,24 +64,24 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   }
 
   // #docregion _buildRow
-  Widget _buildRow(ShoppingListItem pair, BuildContext context) {
+  Widget _buildRow(ShoppingItem pair, BuildContext context) {
     return ListTile(
       title: Text(
         pair.description,
         style: _biggerFont,
       ),
       trailing: Icon(
-        pair.ready ? Icons.check_circle : Icons.radio_button_unchecked,
+        pair.selected ? Icons.check_circle : Icons.radio_button_unchecked,
         color: Colors.blue,
         size: 30,
       ),
       onTap: () {
         setState(() {
-          pair.ready = !pair.ready;
+          pair.switchSelectedState();
           if(_selectedItems == null){
             _selectedItems = new List();
           }
-          if(pair.ready){
+          if(pair.selected){
             _selectedItems.add(pair);
           }else{
             _selectedItems.remove(pair);

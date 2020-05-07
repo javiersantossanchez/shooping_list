@@ -1,5 +1,5 @@
 import 'package:path_provider/path_provider.dart';
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -23,7 +23,6 @@ class FileDataProvider implements IFileDataProvider{
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-    print(directory.path);
     return directory.path;
   }
 
@@ -51,7 +50,7 @@ class FileDataProvider implements IFileDataProvider{
     return _info;
   }
 
-  Future<List<ShoppingListItem>> getShoppingList(int id) async {
+  Future<List<ShoppingItem>> getShoppingList(int id) async {
     ShoppingScheduleItem v = _info.firstWhere((item) => item.id == id);
 
     return v.shoppingList;

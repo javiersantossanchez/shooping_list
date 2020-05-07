@@ -4,23 +4,23 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shoopinglist/ShoopingGroup.dart';
+import 'package:shoopinglist/widgets/ShoppingItemListWidget.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import 'ShoppingScheduleForm.dart';
-import 'dtos/ShoppingScheduleItem.dart';
+import '../ShoppingScheduleForm.dart';
+import '../dtos/ShoppingScheduleItem.dart';
+import 'ShoppingItemScreenWidget.dart';
 
-class ShoppingScheduleListViewWidget extends StatefulWidget {
+class ShoppingScheduleListWidget extends StatefulWidget {
   @override
-  ShoppingScheduleListViewState createState() => ShoppingScheduleListViewState();
+  ShoppingScheduleListState createState() => ShoppingScheduleListState();
 }
 
-class ShoppingScheduleListViewState extends State<ShoppingScheduleListViewWidget> {
-  List<ShoppingScheduleItem> _listItems = new List();
+class ShoppingScheduleListState extends State<ShoppingScheduleListWidget> {
 
-  ShoppingListService _service = ShoppingListService();
+  final List<ShoppingScheduleItem> _listItems = new List();
 
-  ShoppingScheduleListViewState();
+  final ShoppingListService _service = ShoppingListService();
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class ShoppingScheduleListViewState extends State<ShoppingScheduleListViewWidget
   }
 
   @override
-  void didUpdateWidget(ShoppingScheduleListViewWidget oldWidget) {
+  void didUpdateWidget(ShoppingScheduleListWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     this.reloadState();
   }
@@ -71,7 +71,7 @@ class ShoppingScheduleListViewState extends State<ShoppingScheduleListViewWidget
     );
   }
 
-  Widget _getListItemView() {
+  Widget _getListView() {
     Divider div = new Divider(color: Colors.blue,);
     return ListView.separated(
       separatorBuilder: (context, index) => div,
@@ -88,16 +88,15 @@ class ShoppingScheduleListViewState extends State<ShoppingScheduleListViewWidget
       // This is what we show while we're loading
       bodyWidget = Container();
     } else {
-      bodyWidget = _getListItemView();
+      bodyWidget = _getListView();
     }
     return bodyWidget;
-
   }
 
 
   void onClickViewDetailIcon(ShoppingScheduleItem selectedItem, BuildContext context) {
     print('The user click on view detail icon');
-    ShoppingGroup widget = ShoppingGroup(selectedItem.id);
+    Widget widget = ShoppingItemScreenWidget(selectedItem.id);
     MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
     Navigator.push(context, router);
   }

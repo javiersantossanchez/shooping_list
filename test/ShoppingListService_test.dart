@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/providers/FileDataProvider.dart';
 import 'package:shoopinglist/providers/FileParser.dart';
@@ -13,19 +13,19 @@ void main() {
     MockDataProvider dataProvider = MockDataProvider();
 
     ShoppingScheduleItem item;
-    List<ShoppingListItem> shoppingList;
+    List<ShoppingItem> shoppingList;
     List<ShoppingScheduleItem> list = new List();
 
     shoppingList = new List();
-    shoppingList.add(new ShoppingListItem('Test 1'));
-    shoppingList.add(new ShoppingListItem('Test 2'));
-    shoppingList.add(new ShoppingListItem('Test 3'));
+    shoppingList.add(new ShoppingItem('Test 1'));
+    shoppingList.add(new ShoppingItem('Test 2'));
+    shoppingList.add(new ShoppingItem('Test 3'));
     item = (new ShoppingScheduleItemBuilder(1, DateTime.now())..shoppingList = shoppingList).build();
     list.add(item);
 
     shoppingList = new List();
-    shoppingList.add(new ShoppingListItem('Test 4'));
-    shoppingList.add(new ShoppingListItem('Test 5'));
+    shoppingList.add(new ShoppingItem('Test 4'));
+    shoppingList.add(new ShoppingItem('Test 5'));
     item = (new ShoppingScheduleItemBuilder(1, DateTime.now())..shoppingList = shoppingList).build();
     list.add(item);
     dataProvider.info = list;

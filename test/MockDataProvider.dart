@@ -1,4 +1,4 @@
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/providers/IFileDataProvider.dart';
@@ -16,7 +16,7 @@ class MockDataProvider implements IFileDataProvider{
       return Future.value(_info);
   }
 
-  Future<List<ShoppingListItem>> getShoppingList(int id) async {
+  Future<List<ShoppingItem>> getShoppingList(int id) async {
   }
 
   Future<void> createNewShoppingList(
