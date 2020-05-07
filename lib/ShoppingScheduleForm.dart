@@ -23,9 +23,8 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   void saveSchedule (){
-    scheduleItem = new ShoppingScheduleItem(null, selectedDate, _selectedItems);
     ShoppingListService service = ShoppingListService();
-    service.createSchuelde(scheduleItem);
+    service.createSchuelde(selectedDate, _selectedItems);
 
   }
 

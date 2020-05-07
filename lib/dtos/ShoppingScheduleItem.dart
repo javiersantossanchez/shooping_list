@@ -3,17 +3,18 @@ import 'ShoppingListItem.dart';
 
 class ShoppingScheduleItem  {
 
-  int id;
+  final int id;
 
-  DateTime shoppingDate;
+   final DateTime shoppingDate;
 
-  List<ShoppingListItem> shoppingList;
+   final List<ShoppingListItem> shoppingList;
 
-  ShoppingScheduleItem(int id , DateTime shoppingDate, List<ShoppingListItem> shoppingList){
-    this.id = id;
-    this.shoppingDate = shoppingDate;
-    this.shoppingList = shoppingList;
-  }
+
+  ShoppingScheduleItem._builder( ShoppingScheduleItemBuilder builder):
+    this.id = builder.id,
+    this.shoppingDate = builder.date,
+    this.shoppingList = builder.shoppingList
+  ;
 
   Map<String, dynamic> toJson() =>
       {
@@ -21,5 +22,25 @@ class ShoppingScheduleItem  {
         'id': this.id,
         'shoppingList':this.shoppingList.map((item) => {"description": item.description, "ready": item.ready}).toList()
       };
+
+}
+
+class ShoppingScheduleItemBuilder{
+  int _id;
+
+  DateTime _date;
+
+  List<ShoppingListItem> shoppingList;
+
+  int get id => _id;
+
+  DateTime get date => _date;
+
+ ShoppingScheduleItemBuilder(this._id, this._date);
+
+  ShoppingScheduleItem build(){
+      return new ShoppingScheduleItem._builder(this);
+  }
+
 
 }

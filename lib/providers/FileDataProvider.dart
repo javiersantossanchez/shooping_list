@@ -59,7 +59,6 @@ class FileDataProvider implements IFileDataProvider{
 
   Future<void> createNewShoppingList(
       ShoppingScheduleItem newShoppingList) async {
-    newShoppingList.id = _info.length + 1;
     this._info.add(newShoppingList);
 
     final file = await _localFile;

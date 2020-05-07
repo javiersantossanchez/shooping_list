@@ -69,7 +69,8 @@ class ShoppingListService {
     return listToReturn;
   }
 
-  void createSchuelde(ShoppingScheduleItem newShoppingList) {
+  void createSchuelde(DateTime selectedDate, List<ShoppingListItem> listItem ) {
+    ShoppingScheduleItem newShoppingList = (ShoppingScheduleItemBuilder(this.shoppingList.length +1,selectedDate)..shoppingList = listItem).build();
     dataProvider.createNewShoppingList(newShoppingList);
   }
 

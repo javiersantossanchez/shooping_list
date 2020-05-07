@@ -99,7 +99,7 @@ class ShoppingScheduleListViewState extends State<ShoppingScheduleListViewWidget
     print('The user click on view detail icon');
     ShoppingGroup widget = ShoppingGroup(selectedItem.id);
     MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
-    setState(() => Navigator.push(context, router));
+    Navigator.push(context, router);
   }
 
   void onClickDeleteIcon(ShoppingScheduleItem itemToDelete) {

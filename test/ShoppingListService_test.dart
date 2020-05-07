@@ -20,13 +20,13 @@ void main() {
     shoppingList.add(new ShoppingListItem('Test 1'));
     shoppingList.add(new ShoppingListItem('Test 2'));
     shoppingList.add(new ShoppingListItem('Test 3'));
-    item = new ShoppingScheduleItem(1, DateTime.now(), shoppingList);
+    item = (new ShoppingScheduleItemBuilder(1, DateTime.now())..shoppingList = shoppingList).build();
     list.add(item);
 
     shoppingList = new List();
     shoppingList.add(new ShoppingListItem('Test 4'));
     shoppingList.add(new ShoppingListItem('Test 5'));
-    item = new ShoppingScheduleItem(1, DateTime.now(), shoppingList);
+    item = (new ShoppingScheduleItemBuilder(1, DateTime.now())..shoppingList = shoppingList).build();
     list.add(item);
     dataProvider.info = list;
 

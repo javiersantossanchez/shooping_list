@@ -31,7 +31,9 @@ class FileParser {
       return null;
     }
     List<ShoppingListItem> listItems = shoppingList.map((item) => ShoppingListItem(item[_shoppingItemDescriptionKey])).toList();
-    return ShoppingScheduleItem(item[_shoppingScheduleIdKey], date, listItems);
+   return  (ShoppingScheduleItemBuilder(item[_shoppingScheduleIdKey],date)
+            ..shoppingList = listItems
+           ).build();
   }
 
   List<ShoppingScheduleItem> parser (String text) {
