@@ -1,73 +1,80 @@
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/providers/FileDataProvider.dart';
 
+import 'package:shoopinglist/providers/IFileDataProvider.dart';
+
 class ShoppingListService {
-  List<ShoppingListItem> shoppingList;
+
 
   List<ShoppingScheduleItem> shoppingDates;
 
-  FileDataProvider dataProvider = new FileDataProvider();
+  final IFileDataProvider dataProvider;
 
-  Future<List<ShoppingScheduleItem>> loadShoppingDays(){
-      return dataProvider.getScheduler();
+  Future<List<ShoppingScheduleItem>> loadShoppingDays() async {
+    shoppingDates = await  dataProvider.getScheduler();
+    return shoppingDates;
   }
 
-  ShoppingListService(){
-  }
+  ShoppingListService({IFileDataProvider dataProvider}): this.dataProvider = dataProvider ?? new FileDataProvider();
 
-  Future<List<ShoppingListItem>> loadShoppingList(int id){
+  Future<List<ShoppingItem>> loadShoppingList(int id){
     return this.dataProvider.getShoppingList(id);
   }
 
 
-  List<ShoppingListItem> getDefaultShoppingList(){
-    List<ShoppingListItem> listToReturn = new List();
-    listToReturn.add(new ShoppingListItem("Arroz"));
-    listToReturn.add(new ShoppingListItem("Pasta"));
-    listToReturn.add(new ShoppingListItem("Jabon de ropa"));
-    listToReturn.add(new ShoppingListItem("Pasta de dientes"));
-    listToReturn.add(new ShoppingListItem("Cafe"));
-    listToReturn.add(new ShoppingListItem("Papas"));
-    listToReturn.add(new ShoppingListItem("Aceite de oliva"));
-    listToReturn.add(new ShoppingListItem("Banana"));
-    listToReturn.add(new ShoppingListItem("Fresa"));
-    listToReturn.add(new ShoppingListItem("Tomate"));
-    listToReturn.add(new ShoppingListItem("Leche"));
-    listToReturn.add(new ShoppingListItem("Pañales"));
-    listToReturn.add(new ShoppingListItem("Jabon de Ainara"));
-    listToReturn.add(new ShoppingListItem("Atun"));
-    listToReturn.add(new ShoppingListItem("Diablito"));
-    listToReturn.add(new ShoppingListItem("Zanahorias"));
-    listToReturn.add(new ShoppingListItem("Cebolla"));
-    listToReturn.add(new ShoppingListItem("Juegos"));
-    listToReturn.add(new ShoppingListItem("Jamon"));
-    listToReturn.add(new ShoppingListItem("Queso crema"));
-    listToReturn.add(new ShoppingListItem("Pan de sanwich"));
-    listToReturn.add(new ShoppingListItem("Yogurt"));
-    listToReturn.add(new ShoppingListItem("Carne molida"));
-    listToReturn.add(new ShoppingListItem("Pollo"));
-    listToReturn.add(new ShoppingListItem("Bisteck"));
-    listToReturn.add(new ShoppingListItem("Shampo"));
-    listToReturn.add(new ShoppingListItem("Acondicionador"));
-    listToReturn.add(new ShoppingListItem("Jabon de bañarse"));
-    listToReturn.add(new ShoppingListItem("Pimenton"));
-    listToReturn.add(new ShoppingListItem("Harina de cachapa"));
-    listToReturn.add(new ShoppingListItem("Harina pan"));
-    listToReturn.add(new ShoppingListItem("Harina de trigo"));
-    listToReturn.add(new ShoppingListItem("Mantequilla de mani"));
-    listToReturn.add(new ShoppingListItem("Mantequilla"));
-    listToReturn.add(new ShoppingListItem("Cereal"));
-    listToReturn.add(new ShoppingListItem("Compota"));
-    listToReturn.add(new ShoppingListItem("Mandarina"));
-    listToReturn.add(new ShoppingListItem("Aguacate"));
-    listToReturn.add(new ShoppingListItem("Toallitas clorox"));
-    listToReturn.add(new ShoppingListItem("Desinfectante"));
+  List<ShoppingItem> getDefaultShoppingList(){
+    List<ShoppingItem> listToReturn = new List();
+    listToReturn.add(new ShoppingItem("Arroz"));
+    listToReturn.add(new ShoppingItem("Pasta"));
+    listToReturn.add(new ShoppingItem("Jabon de ropa"));
+    listToReturn.add(new ShoppingItem("Pasta de dientes"));
+    listToReturn.add(new ShoppingItem("Cafe"));
+    listToReturn.add(new ShoppingItem("Papas"));
+    listToReturn.add(new ShoppingItem("Aceite de oliva"));
+    listToReturn.add(new ShoppingItem("Banana"));
+    listToReturn.add(new ShoppingItem("Fresa"));
+    listToReturn.add(new ShoppingItem("Tomate"));
+    listToReturn.add(new ShoppingItem("Leche"));
+    listToReturn.add(new ShoppingItem("Pañales"));
+    listToReturn.add(new ShoppingItem("Jabon de Ainara"));
+    listToReturn.add(new ShoppingItem("Atun"));
+    listToReturn.add(new ShoppingItem("Diablito"));
+    listToReturn.add(new ShoppingItem("Zanahorias"));
+    listToReturn.add(new ShoppingItem("Cebolla"));
+    listToReturn.add(new ShoppingItem("Juegos"));
+    listToReturn.add(new ShoppingItem("Jamon"));
+    listToReturn.add(new ShoppingItem("Queso crema"));
+    listToReturn.add(new ShoppingItem("Pan de sanwich"));
+    listToReturn.add(new ShoppingItem("Yogurt"));
+    listToReturn.add(new ShoppingItem("Carne molida"));
+    listToReturn.add(new ShoppingItem("Pollo"));
+    listToReturn.add(new ShoppingItem("Bisteck"));
+    listToReturn.add(new ShoppingItem("Shampo"));
+    listToReturn.add(new ShoppingItem("Acondicionador"));
+    listToReturn.add(new ShoppingItem("Jabon de bañarse"));
+    listToReturn.add(new ShoppingItem("Pimenton"));
+    listToReturn.add(new ShoppingItem("Harina de cachapa"));
+    listToReturn.add(new ShoppingItem("Harina pan"));
+    listToReturn.add(new ShoppingItem("Harina de trigo"));
+    listToReturn.add(new ShoppingItem("Mantequilla de mani"));
+    listToReturn.add(new ShoppingItem("Mantequilla"));
+    listToReturn.add(new ShoppingItem("Cereal"));
+    listToReturn.add(new ShoppingItem("Compota"));
+    listToReturn.add(new ShoppingItem("Mandarina"));
+    listToReturn.add(new ShoppingItem("Aguacate"));
+    listToReturn.add(new ShoppingItem("Toallitas clorox"));
+    listToReturn.add(new ShoppingItem("Desinfectante"));
     return listToReturn;
   }
 
-  void createSchuelde(ShoppingScheduleItem newShoppingList) {
+  void createSchuelde(DateTime selectedDate, List<ShoppingItem> listItem ) {
+    ShoppingScheduleItem newShoppingList = (ShoppingScheduleItemBuilder(this.shoppingDates.length +1,selectedDate)..shoppingList = listItem).build();
     dataProvider.createNewShoppingList(newShoppingList);
+  }
+
+  void deleteSchuelde(ShoppingScheduleItem shoppingListToDelete) {
+    dataProvider.deleteShoppingList(shoppingListToDelete);
   }
 
 }

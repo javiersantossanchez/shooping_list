@@ -1,12 +1,14 @@
 import 'package:path_provider/path_provider.dart';
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'dart:io';
 import 'dart:convert';
 
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
-import 'package:shoopinglist/providers/FileParser.dart'; //to convert json to maps and vice versa
+import 'package:shoopinglist/providers/FileParser.dart';
 
-class FileDataProvider {
+import 'IFileDataProvider.dart'; //to convert json to maps and vice versa
+
+class FileDataProvider implements IFileDataProvider{
   static final FileDataProvider _instance = new FileDataProvider._internal();
 
   final String _fileName ="shopping_list.txt";
@@ -21,7 +23,6 @@ class FileDataProvider {
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-    print(directory.path);
     return directory.path;
   }
 
@@ -49,7 +50,7 @@ class FileDataProvider {
     return _info;
   }
 
-  Future<List<ShoppingListItem>> getShoppingList(int id) async {
+  Future<List<ShoppingItem>> getShoppingList(int id) async {
     ShoppingScheduleItem v = _info.firstWhere((item) => item.id == id);
 
     return v.shoppingList;
@@ -57,9 +58,14 @@ class FileDataProvider {
 
   Future<void> createNewShoppingList(
       ShoppingScheduleItem newShoppingList) async {
-    newShoppingList.id = _info.length + 1;
     this._info.add(newShoppingList);
 
+    final file = await _localFile;
+    file.writeAsStringSync(json.encode(this._info));
+  }
+
+  Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
+    this._info.remove(shoppingListToDelete);
     final file = await _localFile;
     file.writeAsStringSync(json.encode(this._info));
   }
