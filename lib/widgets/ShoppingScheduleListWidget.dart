@@ -4,27 +4,33 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shoopinglist/ShoopingGroup.dart';
+import 'package:shoopinglist/widgets/ShoppingItemListWidget.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import 'ShoppingScheduleForm.dart';
-import 'dtos/ShoppingScheduleItem.dart';
+import '../ShoppingScheduleForm.dart';
+import '../dtos/ShoppingScheduleItem.dart';
+import 'ShoppingItemScreenWidget.dart';
 
-class ShoppingScheduleWidget extends StatefulWidget {
+class ShoppingScheduleListWidget extends StatefulWidget {
   @override
-  ShoppingScheduleState createState() => ShoppingScheduleState();
+  ShoppingScheduleListState createState() => ShoppingScheduleListState();
 }
 
-class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
-  List<ShoppingScheduleItem> _listItems = new List();
+class ShoppingScheduleListState extends State<ShoppingScheduleListWidget> {
 
-  ShoppingListService _service = ShoppingListService();
+  final List<ShoppingScheduleItem> _listItems = new List();
 
-  ShoppingScheduleState();
+  final ShoppingListService _service = ShoppingListService();
 
   @override
   void initState() {
     super.initState();
+    this.reloadState();
+  }
+
+  @override
+  void didUpdateWidget(ShoppingScheduleListWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
     this.reloadState();
   }
 
@@ -65,7 +71,7 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
     );
   }
 
-  Widget _getListItemView() {
+  Widget _getListView() {
     Divider div = new Divider(color: Colors.blue,);
     return ListView.separated(
       separatorBuilder: (context, index) => div,
@@ -77,37 +83,22 @@ class ShoppingScheduleState extends State<ShoppingScheduleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget mainWidget;
+    Widget bodyWidget;
     if (_listItems == null) {
       // This is what we show while we're loading
-      mainWidget = Container();
+      bodyWidget = Container();
     } else {
-      mainWidget = Scaffold(
-        appBar: AppBar(
-          title: Text('Shopping day'),
-        ),
-        body: _getListItemView(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () => this.onClickAddButton(context),
-        ),
-      );
+      bodyWidget = _getListView();
     }
-    return mainWidget;
+    return bodyWidget;
   }
 
-  void onClickAddButton(BuildContext context) {
-    print('The user click on add button');
-    ShoppingScheduleFormWidget widget = new ShoppingScheduleFormWidget();
-    MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
-    Navigator.push(context, router).then((result) => this.reloadState());
-  }
 
   void onClickViewDetailIcon(ShoppingScheduleItem selectedItem, BuildContext context) {
     print('The user click on view detail icon');
-    ShoppingGroup widget = ShoppingGroup(selectedItem.id);
+    Widget widget = ShoppingItemScreenWidget(selectedItem.id);
     MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
-    setState(() => Navigator.push(context, router));
+    Navigator.push(context, router);
   }
 
   void onClickDeleteIcon(ShoppingScheduleItem itemToDelete) {

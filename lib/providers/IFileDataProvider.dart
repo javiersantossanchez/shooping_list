@@ -1,5 +1,5 @@
 import 'package:path_provider/path_provider.dart';
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -13,7 +13,7 @@ class IFileDataProvider {
 
   }
 
-  Future<List<ShoppingListItem>> getShoppingList(int id) async {
+  Future<List<ShoppingItem>> getShoppingList(int id) async {
 
   }
 

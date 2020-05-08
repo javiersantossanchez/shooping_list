@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
 import 'dtos/ShoppingScheduleItem.dart';
@@ -12,20 +12,19 @@ class ShoppingScheduleFormWidget extends StatefulWidget {
 }
 
 class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
-  DateTime selectedDate; //= DateTime.now();
+  DateTime selectedDate;
 
-  List<ShoppingListItem> _items;
+  List<ShoppingItem> _items;
 
-  List<ShoppingListItem> _selectedItems;
+  List<ShoppingItem> _selectedItems;
 
   ShoppingScheduleItem scheduleItem;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   void saveSchedule (){
-    scheduleItem = new ShoppingScheduleItem(null, selectedDate, _selectedItems);
     ShoppingListService service = ShoppingListService();
-    service.createSchuelde(scheduleItem);
+    service.createSchuelde(selectedDate, _selectedItems);
 
   }
 
@@ -52,39 +51,37 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
       });
   }
 
-  Widget _buildSuggestions() {
-    return ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-              color: Colors.blue,
-            ),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(16.0),
-        itemCount: _items.length,
-        itemBuilder: /*1*/ (context, index) {
-          return _buildRow(_items[index], context);
-        });
+  Widget _getListItemView() {
+    Divider div = new Divider(color: Colors.blue,);
+    return new Expanded(
+        child: ListView.separated(
+          separatorBuilder: (context, index) => div,
+          padding: const EdgeInsets.all(16.0),
+          itemCount: _items.length,
+          itemBuilder: (context, index) => _buildRow(_items[index], context)
+        )
+      );
   }
 
   // #docregion _buildRow
-  Widget _buildRow(ShoppingListItem pair, BuildContext context) {
+  Widget _buildRow(ShoppingItem pair, BuildContext context) {
     return ListTile(
       title: Text(
         pair.description,
         style: _biggerFont,
       ),
       trailing: Icon(
-        pair.ready ? Icons.check_circle : Icons.radio_button_unchecked,
+        pair.selected ? Icons.check_circle : Icons.radio_button_unchecked,
         color: Colors.blue,
         size: 30,
       ),
       onTap: () {
         setState(() {
-          pair.ready = !pair.ready;
+          pair.switchSelectedState();
           if(_selectedItems == null){
             _selectedItems = new List();
           }
-          if(pair.ready){
+          if(pair.selected){
             _selectedItems.add(pair);
           }else{
             _selectedItems.remove(pair);
@@ -94,6 +91,23 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
       },
     );
   }
+
+  Widget _getDatePickerView(){
+    return ListTile(
+      leading: Icon(
+        Icons.date_range,
+        size: 30.0,
+        color: Colors.blue,
+      ),
+      title: Text( this.selectedDate == null
+          ? "Not set"
+          : new DateFormat.yMMMd()
+          .format(this.selectedDate)),
+      subtitle: Text('Click to select a date'),
+      onTap: () => _selectDate(context),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -106,65 +120,15 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
         title: Text('DateTime Picker'),
       ),
       body: Column(children: <Widget>[
+        _getDatePickerView(),
+        _getListItemView(),
         RaisedButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          elevation: 4.0,
-          onPressed: () => _selectDate(context),
-          child: Container(
-            alignment: Alignment.center,
-            height: 50.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.date_range,
-                            size: 18.0,
-                            color: Colors.teal,
-                          ),
-                          Text(
-                            this.selectedDate == null
-                                ? "Not set"
-                                : new DateFormat.yMMMd()
-                                    .format(this.selectedDate),
-                            style: TextStyle(
-                                color: Colors.teal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Text(
-                  "  Change22222",
-                  style: TextStyle(
-                      color: Colors.teal,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0),
-                ),
-              ],
-            ),
-          ),
-          color: Colors.white,
-        ),
-        new Expanded(
-          child: _buildSuggestions(),
-        ),
-    RaisedButton(
-      onPressed: () {
+          onPressed: () {
           setState(() {
               saveSchedule();
               Navigator.pop(context,);
           });
-      },
-        child: Text(
+      }, child: Text(
         'Save',
         ),
     )

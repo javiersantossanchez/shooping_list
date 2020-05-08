@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/ShoppingListItem.dart';
+import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 
 class FileParser {
@@ -30,8 +30,10 @@ class FileParser {
     if(shoppingList == null){
       return null;
     }
-    List<ShoppingListItem> listItems = shoppingList.map((item) => ShoppingListItem(item[_shoppingItemDescriptionKey])).toList();
-    return ShoppingScheduleItem(item[_shoppingScheduleIdKey], date, listItems);
+    List<ShoppingItem> listItems = shoppingList.map((item) => ShoppingItem(item[_shoppingItemDescriptionKey])).toList();
+   return  (ShoppingScheduleItemBuilder(item[_shoppingScheduleIdKey],date)
+            ..shoppingList = listItems
+           ).build();
   }
 
   List<ShoppingScheduleItem> parser (String text) {

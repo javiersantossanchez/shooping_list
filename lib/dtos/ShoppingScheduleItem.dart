@@ -1,25 +1,46 @@
 
-import 'ShoppingListItem.dart';
+import 'ShoppingItem.dart';
 
 class ShoppingScheduleItem  {
 
-  int id;
+  final int id;
 
-  DateTime shoppingDate;
+   final DateTime shoppingDate;
 
-  List<ShoppingListItem> shoppingList;
+   final List<ShoppingItem> shoppingList;
 
-  ShoppingScheduleItem(int id , DateTime shoppingDate, List<ShoppingListItem> shoppingList){
-    this.id = id;
-    this.shoppingDate = shoppingDate;
-    this.shoppingList = shoppingList;
-  }
+
+  ShoppingScheduleItem._builder( ShoppingScheduleItemBuilder builder):
+    this.id = builder.id,
+    this.shoppingDate = builder.date,
+    this.shoppingList = builder.shoppingList
+  ;
 
   Map<String, dynamic> toJson() =>
       {
         'shoppingDate': shoppingDate.toIso8601String(),
         'id': this.id,
-        'shoppingList':this.shoppingList.map((item) => {"description": item.description, "ready": item.ready}).toList()
+        'shoppingList':this.shoppingList.map((item) => {"description": item.description, "ready": item.selected}).toList()
       };
+
+}
+
+class ShoppingScheduleItemBuilder{
+  int _id;
+
+  DateTime _date;
+
+  List<ShoppingItem> shoppingList;
+
+  int get id => _id;
+
+  DateTime get date => _date;
+
+ ShoppingScheduleItemBuilder(this._id, this._date);
+
+  ShoppingScheduleItem build(){
+      return new ShoppingScheduleItem._builder(this);
+  }
+
 
 }
