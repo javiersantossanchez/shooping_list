@@ -36,9 +36,7 @@ class ShoppingItemListState extends State<ShoppingItemListWidget> {
         color: Colors.blue,
         size: 30,
       ),
-      onPressed: () =>  setState(() {
-        currentItem.switchSelectedState();
-      }),
+      onPressed: () => this._test(currentItem),
     );
   }
 
@@ -81,6 +79,14 @@ class ShoppingItemListState extends State<ShoppingItemListWidget> {
           this._listItems = result;
         })
     );
+  }
+  
+  void _test(ShoppingItem currentItem){
+    ShoppingListService service = ShoppingListService();
+    setState((){
+      currentItem.switchSelectedState();
+      service.updateShoopingItem();
+    });
   }
 
 }

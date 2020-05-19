@@ -59,13 +59,18 @@ class FileDataProvider implements IFileDataProvider{
   Future<void> createNewShoppingList(
       ShoppingScheduleItem newShoppingList) async {
     this._info.add(newShoppingList);
-
-    final file = await _localFile;
-    file.writeAsStringSync(json.encode(this._info));
+    this.updateShoppingList();
   }
 
   Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
     this._info.remove(shoppingListToDelete);
+    this.updateShoppingList();
+  }
+
+  Future<void> updateShoppingList() async{
+    this._info.forEach((item) => print(item.shoppingList.first.selected));
+
+
     final file = await _localFile;
     file.writeAsStringSync(json.encode(this._info));
   }

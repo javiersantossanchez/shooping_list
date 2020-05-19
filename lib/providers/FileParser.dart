@@ -12,6 +12,8 @@ class FileParser {
 
   final _shoppingItemDescriptionKey = "description";
 
+  final _shoppingItemReadyKey = "ready";
+
   final _shoppingScheduleIdKey = "id";
 
   ShoppingScheduleItem _parse(dynamic item) {
@@ -30,8 +32,9 @@ class FileParser {
     if(shoppingList == null){
       return null;
     }
-    List<ShoppingItem> listItems = shoppingList.map((item) => ShoppingItem(item[_shoppingItemDescriptionKey])).toList();
-   return  (ShoppingScheduleItemBuilder(item[_shoppingScheduleIdKey],date)
+
+    List<ShoppingItem> listItems = shoppingList.map((item) => ShoppingItem(item[_shoppingItemDescriptionKey], item[_shoppingItemReadyKey])).toList();
+    return  (ShoppingScheduleItemBuilder(item[_shoppingScheduleIdKey],date)
             ..shoppingList = listItems
            ).build();
   }

@@ -24,4 +24,8 @@ class IFileDataProvider {
   Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
 
   }
+
+  Future<void> updateShoppingList() async{
+
+  }
 }

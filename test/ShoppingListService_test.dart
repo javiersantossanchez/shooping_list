@@ -17,15 +17,15 @@ void main() {
     List<ShoppingScheduleItem> list = new List();
 
     shoppingList = new List();
-    shoppingList.add(new ShoppingItem('Test 1'));
-    shoppingList.add(new ShoppingItem('Test 2'));
-    shoppingList.add(new ShoppingItem('Test 3'));
+    shoppingList.add(new ShoppingItem('Test 1',false));
+    shoppingList.add(new ShoppingItem('Test 2',false));
+    shoppingList.add(new ShoppingItem('Test 3',false));
     item = (new ShoppingScheduleItemBuilder(1, DateTime.now())..shoppingList = shoppingList).build();
     list.add(item);
 
     shoppingList = new List();
-    shoppingList.add(new ShoppingItem('Test 4'));
-    shoppingList.add(new ShoppingItem('Test 5'));
+    shoppingList.add(new ShoppingItem('Test 4',false));
+    shoppingList.add(new ShoppingItem('Test 5',false));
     item = (new ShoppingScheduleItemBuilder(1, DateTime.now())..shoppingList = shoppingList).build();
     list.add(item);
     dataProvider.info = list;
