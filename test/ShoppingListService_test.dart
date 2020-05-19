@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/providers/FileDataProvider.dart';
-import 'package:shoopinglist/providers/FileParser.dart';
+import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
 import 'MockDataProvider.dart';

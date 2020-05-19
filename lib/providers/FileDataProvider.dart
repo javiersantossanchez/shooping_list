@@ -4,14 +4,18 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
-import 'package:shoopinglist/providers/FileParser.dart';
+import 'package:shoopinglist/parsers/FileParser.dart';
+import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 
 import 'IFileDataProvider.dart'; //to convert json to maps and vice versa
 
 class FileDataProvider implements IFileDataProvider{
+
   static final FileDataProvider _instance = new FileDataProvider._internal();
 
   final String _fileName ="shopping_list.txt";
+
+  final IShoppingScheduleParse _parser =  new FileParser();
 
   List<ShoppingScheduleItem> _info = new List();
 
@@ -41,8 +45,7 @@ class FileDataProvider implements IFileDataProvider{
         file.createSync();
       }
       String contents = await file.readAsString();
-      FileParser parser = new FileParser();
-      List<ShoppingScheduleItem> itemsFromFile = parser.parser(contents);
+      List<ShoppingScheduleItem> itemsFromFile = _parser.parser(contents);
       if(itemsFromFile != null) {
         _info.addAll(itemsFromFile);
       }
@@ -68,10 +71,8 @@ class FileDataProvider implements IFileDataProvider{
   }
 
   Future<void> updateShoppingList() async{
-    this._info.forEach((item) => print(item.shoppingList.first.selected));
-
-
     final file = await _localFile;
+    //TODO: I need move this json.encode statement to parse class
     file.writeAsStringSync(json.encode(this._info));
   }
 }
