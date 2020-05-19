@@ -12,7 +12,7 @@ class ShoppingScheduleItem  {
 
   ShoppingScheduleItem._builder( ShoppingScheduleItemBuilder builder):
     this.id = builder.id,
-    this.shoppingDate = builder.date,
+    this.shoppingDate = builder.date, //TODO: IN a future is good practice validate a not null for this parameter
     this.shoppingList = builder.shoppingList
   ;
 

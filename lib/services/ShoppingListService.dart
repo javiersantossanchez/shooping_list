@@ -7,13 +7,10 @@ import 'package:shoopinglist/providers/IFileDataProvider.dart';
 class ShoppingListService {
 
 
-  List<ShoppingScheduleItem> shoppingDates;
-
   final IFileDataProvider dataProvider;
 
   Future<List<ShoppingScheduleItem>> loadShoppingDays() async {
-    shoppingDates = await  dataProvider.getScheduler();
-    return shoppingDates;
+    return await  dataProvider.getScheduler();
   }
 
   ShoppingListService({IFileDataProvider dataProvider}): this.dataProvider = dataProvider ?? new FileDataProvider();
@@ -69,7 +66,7 @@ class ShoppingListService {
   }
 
   void createSchuelde(DateTime selectedDate, List<ShoppingItem> listItem ) {
-    ShoppingScheduleItem newShoppingList = (ShoppingScheduleItemBuilder(this.shoppingDates.length +1,selectedDate)..shoppingList = listItem).build();
+    ShoppingScheduleItem newShoppingList = (ShoppingScheduleItemBuilder((new DateTime.now()).millisecondsSinceEpoch,selectedDate)..shoppingList = listItem).build();
     dataProvider.createNewShoppingList(newShoppingList);
   }
 

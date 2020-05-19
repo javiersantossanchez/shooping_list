@@ -108,6 +108,12 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
     );
   }
 
+  void onClickSaveButton(BuildContext context){
+      setState(() {
+        saveSchedule();
+        Navigator.pop(context,);
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,12 +129,8 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
         _getDatePickerView(),
         _getListItemView(),
         RaisedButton(
-          onPressed: () {
-          setState(() {
-              saveSchedule();
-              Navigator.pop(context,);
-          });
-      }, child: Text(
+          onPressed: this.selectedDate == null? null : ()=> onClickSaveButton(context),
+          child: Text(
         'Save',
         ),
     )
