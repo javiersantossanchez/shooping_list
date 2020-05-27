@@ -25,4 +25,9 @@ class MockDataProvider implements IFileDataProvider{
 
   Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
   }
+
+  @override
+  Future<void> updateShoppingList() {
+    return null;
+  }
 }

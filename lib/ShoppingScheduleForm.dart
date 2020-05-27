@@ -12,7 +12,7 @@ class ShoppingScheduleFormWidget extends StatefulWidget {
 }
 
 class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
-  DateTime selectedDate;
+  DateTime _selectedDate;
 
   List<ShoppingItem> _items;
 
@@ -24,7 +24,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
 
   void saveSchedule (){
     ShoppingListService service = ShoppingListService();
-    service.createSchuelde(selectedDate, _selectedItems);
+    service.createSchuelde(_selectedDate, _selectedItems);
 
   }
 
@@ -44,9 +44,9 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != _selectedDate)
       setState(() {
-        selectedDate = picked;
+        _selectedDate = picked;
 
       });
   }
@@ -99,15 +99,21 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
         size: 30.0,
         color: Colors.blue,
       ),
-      title: Text( this.selectedDate == null
+      title: Text( this._selectedDate == null
           ? "Not set"
           : new DateFormat.yMMMd()
-          .format(this.selectedDate)),
+          .format(this._selectedDate)),
       subtitle: Text('Click to select a date'),
       onTap: () => _selectDate(context),
     );
   }
 
+  void onClickSaveButton(BuildContext context){
+      setState(() {
+        saveSchedule();
+        Navigator.pop(context,);
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,12 +129,8 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
         _getDatePickerView(),
         _getListItemView(),
         RaisedButton(
-          onPressed: () {
-          setState(() {
-              saveSchedule();
-              Navigator.pop(context,);
-          });
-      }, child: Text(
+          onPressed: this._selectedDate == null? null : ()=> onClickSaveButton(context),
+          child: Text(
         'Save',
         ),
     )

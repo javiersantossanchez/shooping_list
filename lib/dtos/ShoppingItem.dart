@@ -4,9 +4,9 @@ class ShoppingItem  {
 
   bool _selected;
 
-  ShoppingItem(String description):
+  ShoppingItem(String description, bool selected):
     this.description = description,
-    this._selected = false;
+    this._selected = selected;
 
   bool get selected => _selected;
 
