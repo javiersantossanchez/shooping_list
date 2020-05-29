@@ -42,12 +42,13 @@ class ShoppingItemListState extends State<ShoppingItemListWidget> {
 
   Widget _getListView() {
     Divider div = new Divider(color: Colors.blue,);
-    return ListView.separated(
+    return new Expanded(
+        child:ListView.separated(
         separatorBuilder: (context, index) => div,
         padding: const EdgeInsets.all(16.0),
         itemCount: _listItems.length,
         itemBuilder: (context, index) => _getItemView(_listItems[index], context),
-    );
+    ));
   }
 
   Widget _getItemView(ShoppingItem currentItem, BuildContext context) {
