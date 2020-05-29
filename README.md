@@ -14,6 +14,11 @@ All the data is store inside the device's file system. in future I want store th
 
 ## Screenshots
 
+![List!](/screenshots/list.png "List")
+
+![detailed-view!](/screenshots/detailed-view.png "detailed-view")
+
+![new-list-form!](/screenshots/list.png "new-list-form")
 
 ---
 A few resources to find information about Flutter:
