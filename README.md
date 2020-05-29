@@ -1,16 +1,23 @@
 # shoopinglist
 
-A practice project
+A practice project to work with **Flutter Framework**, the main idea of this project is start my learning path with this framework. The project is a basic implementation for an application to controlling you buys on a grocery.   
 
-## Getting Started
+The user can: 
+- Create a list with several item for buy (The system has a default list of item to be select)
+- See all the list created by the user
+- Mark the items inside each list (To control the items you already took in the grocery)
+- Delete list
 
-This project is a starting point for a Flutter application.
+All the data is store inside the device's file system. in future I want store the data in the cloud. I need think about the best way to implement this feature.
 
-A few resources to get you started if this is your first Flutter project:
+---
+
+## Screenshots
+
+
+---
+A few resources to find information about Flutter:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [online documentation](https://flutter.dev/docs)
