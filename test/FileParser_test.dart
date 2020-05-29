@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
-import 'package:shoopinglist/providers/FileParser.dart';
+import 'package:shoopinglist/parsers/FileParser.dart';
 
 void main() {
   test('Parser the text in the right way', () {
