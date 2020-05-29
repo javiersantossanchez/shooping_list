@@ -28,7 +28,15 @@ class ShoppingItemScreenState extends State<ShoppingItemScreenWidget> {
       appBar: AppBar(
         title: Text('Shopping day'),
       ),
-      body: ShoppingItemListWidget(this._id),
+      body:  Column(children: <Widget>[
+        ShoppingItemListWidget(this._id),
+        RaisedButton(
+          onPressed: () => Navigator.pop(context,),
+          child: Text(
+            'Finish',
+          ),
+        )
+      ]),
     );
   }
 
