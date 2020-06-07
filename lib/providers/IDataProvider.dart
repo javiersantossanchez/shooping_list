@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/parsers/FileParser.dart'; //to convert json to maps and vice versa
 
-abstract class IFileDataProvider {
+abstract class IDataProvider {
 
 
   Future<List<ShoppingScheduleItem>> getScheduler() ;

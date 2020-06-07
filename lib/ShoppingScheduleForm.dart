@@ -33,9 +33,10 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   void initState() {
     super.initState();
     ShoppingListService service = ShoppingListService();
-    setState(() {
-      this._items = service.getDefaultShoppingList();
-    });
+    service.getDefaultShoppingList().then((result) => setState(() {this._items = result;}));
+
+
+
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -52,6 +53,10 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   }
 
   Widget _getListItemView() {
+    if (_items == null) {
+      // This is what we show while we're loading
+      return new Container();
+    }
     Divider div = new Divider(color: Colors.blue,);
     return new Expanded(
         child: ListView.separated(
@@ -117,10 +122,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_items == null) {
-      // This is what we show while we're loading
-      return new Container();
-    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('DateTime Picker'),
