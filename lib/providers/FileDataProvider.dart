@@ -7,9 +7,12 @@ import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 
-import 'IFileDataProvider.dart'; //to convert json to maps and vice versa
+import 'IDataProvider.dart';
 
-class FileDataProvider implements IFileDataProvider{
+import 'package:http/http.dart' as http;
+
+
+class FileDataProvider implements IDataProvider{
 
   static final FileDataProvider _instance = new FileDataProvider._internal();
 
@@ -50,6 +53,9 @@ class FileDataProvider implements IFileDataProvider{
         _info.addAll(itemsFromFile);
       }
     }
+
+
+
     return _info;
   }
 
