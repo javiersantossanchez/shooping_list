@@ -1,10 +1,10 @@
 import 'package:shoopinglist/dtos/ShoppingItem.dart';
 
 import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
-import 'package:shoopinglist/providers/IFileDataProvider.dart';
+import 'package:shoopinglist/providers/IDataProvider.dart';
 
 
-class MockDataProvider implements IFileDataProvider{
+class MockDataProvider implements IDataProvider{
 
   List<ShoppingScheduleItem> _info = new List();
 
