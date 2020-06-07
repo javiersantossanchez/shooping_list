@@ -7,6 +7,7 @@ import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 import 'package:shoopinglist/providers/IDefaultShoppingListDataProvider.dart';
+import 'package:shoopinglist/providers/StaticDefaultShoppingListDataProvider.dart';
 
 import 'IDataProvider.dart';
 
@@ -24,11 +25,6 @@ class JexiaDefaultShoppingListDataProvider implements IDefaultShoppingListDataPr
   final String _listItemsDefaultPath = 'ds/list_items_default';
 
 
-
-  final IShoppingScheduleParse _parser =  new FileParser();
-
-  List<ShoppingScheduleItem> _info = new List();
-
   factory JexiaDefaultShoppingListDataProvider() {
     return _instance;
   }
@@ -37,14 +33,30 @@ class JexiaDefaultShoppingListDataProvider implements IDefaultShoppingListDataPr
 
   @override
   Future<List<ShoppingItem>> getDefaultShoppingList() async {
-    final response = await http.post(_baseUrl+_authPath, body: jsonEncode(<String, String>{'method': 'apk', 'key':'d313ed1b-dc27-4aa2-aeb5-72c83a9c7b3f', 'secret':'lsHr1DfGarp9z1v0EpD6oYRXQJXisDlwHTU2W1nqibOp9glFLKrAXPT++ZaE0iaP6fniV9ZHG1BRZDv11tHD6w=='}));
-    String accesToken = json.decode(response.body)['access_token'];
 
-    final result = await http.get(_baseUrl+_listItemsDefaultPath, headers: {'Authorization': 'Bearer $accesToken'});
+        try {
+          final response = await http.post(_baseUrl + _authPath, body: jsonEncode(
+              <String, String>{
+                'method': 'apk',
+                'key': 'd313ed1b-dc27-4aa2-aeb5-72c83a9c7b3f',
+                'secret': 'lsHr1DfGarp9z1v0EpD6oYRXQJXisDlwHTU2W1nqibOp9glFLKrAXPT++ZaE0iaP6fniV9ZHG1BRZDv11tHD6w=='
+              }));
+          String accesToken = json.decode(response.body)['access_token'];
 
-    List<dynamic> decode = json.decode(result.body);
+          final result = await http.get(_baseUrl + _listItemsDefaultPath,
+              headers: {'Authorization': 'Bearer $accesToken'});
 
-    return decode.map((item) => new ShoppingItem(item['description'],false)).toList();
+          List<dynamic> decode = json.decode(result.body);
+
+          return decode.map((item) => new ShoppingItem(item['description'], false))
+              .toList();
+        }catch (e){
+          print('There is a problem on connection with Jexia');
+          StaticDefaultShoppingListDataProvider staticProvider = new StaticDefaultShoppingListDataProvider();
+          return staticProvider.getDefaultShoppingList();
+
+        }
+
   }
 
 
