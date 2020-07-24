@@ -5,8 +5,10 @@ import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
 import 'package:shoopinglist/providers/FileDataProvider.dart';
 
 import 'package:shoopinglist/providers/IDataProvider.dart';
+import 'package:shoopinglist/providers/IDefaultShoppingListDataCreator.dart';
 
 import 'package:shoopinglist/providers/IDefaultShoppingListDataProvider.dart';
+import 'package:shoopinglist/providers/JexiaDefaultShoppingListDataCreator.dart';
 import 'package:shoopinglist/providers/JexiaDefaultShoppingListDataProvider.dart';
 
 class ShoppingListService {
@@ -16,11 +18,14 @@ class ShoppingListService {
 
   final IDefaultShoppingListDataProvider _defaultShoppingListDataProvider;
 
+  final IDefaultShoppingListDataCreator __defaultShoppingListDataCreator;
 
 
-  ShoppingListService({IDataProvider dataProvider, IDefaultShoppingListDataProvider defaultShoppingListDataProvider}):
+
+  ShoppingListService({IDataProvider dataProvider, IDefaultShoppingListDataProvider defaultShoppingListDataProvider, IDefaultShoppingListDataCreator defaultShoppingListDataCreator}):
         this._dataProvider = dataProvider ?? new FileDataProvider() ,
-        this._defaultShoppingListDataProvider = defaultShoppingListDataProvider?? new JexiaDefaultShoppingListDataProvider();
+        this._defaultShoppingListDataProvider = defaultShoppingListDataProvider?? new JexiaDefaultShoppingListDataProvider(),
+        this.__defaultShoppingListDataCreator = defaultShoppingListDataCreator?? new JexiaDefaultShoppingListDataCreator();
 
   Future<List<ShoppingScheduleItem>> loadShoppingDays() async {
     return await this._dataProvider.getScheduler();
@@ -35,6 +40,11 @@ class ShoppingListService {
     return this._defaultShoppingListDataProvider.getDefaultShoppingList();
 
 
+  }
+
+
+  void createNewItemOnShoppingList(String newItemName ) {
+    __defaultShoppingListDataCreator.createNewItem(newItemName);
   }
 
   void createSchuelde(DateTime selectedDate, List<ShoppingItem> listItem ) {

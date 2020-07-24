@@ -8,10 +8,13 @@ import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 import 'package:shoopinglist/providers/IDefaultShoppingListDataProvider.dart';
 import 'package:shoopinglist/providers/StaticDefaultShoppingListDataProvider.dart';
+import 'package:shoopinglist/providers/authenticator/JexiaAuthenticator.dart';
 
 import 'IDataProvider.dart';
 
 import 'package:http/http.dart' as http;
+
+import 'IDefaultShoppingListDataCreator.dart';
 
 
 class JexiaDefaultShoppingListDataProvider implements IDefaultShoppingListDataProvider{
@@ -20,9 +23,9 @@ class JexiaDefaultShoppingListDataProvider implements IDefaultShoppingListDataPr
 
   final String _baseUrl ="https://2b23210d-91d7-4a37-a1b3-3a7a30b20e9c.app.jexia.com/";
 
-  final String _authPath = 'auth';
-
   final String _listItemsDefaultPath = 'ds/list_items_default';
+
+  final JexiaAuthenticator authenticator = JexiaAuthenticator ();
 
 
   factory JexiaDefaultShoppingListDataProvider() {
@@ -31,17 +34,13 @@ class JexiaDefaultShoppingListDataProvider implements IDefaultShoppingListDataPr
 
   JexiaDefaultShoppingListDataProvider._internal();
 
+
+
   @override
   Future<List<ShoppingItem>> getDefaultShoppingList() async {
 
         try {
-          final response = await http.post(_baseUrl + _authPath, body: jsonEncode(
-              <String, String>{
-                'method': 'apk',
-                'key': 'd313ed1b-dc27-4aa2-aeb5-72c83a9c7b3f',
-                'secret': 'lsHr1DfGarp9z1v0EpD6oYRXQJXisDlwHTU2W1nqibOp9glFLKrAXPT++ZaE0iaP6fniV9ZHG1BRZDv11tHD6w=='
-              }));
-          String accesToken = json.decode(response.body)['access_token'];
+          String accesToken = await authenticator.authenticate();
 
           final result = await http.get(_baseUrl + _listItemsDefaultPath,
               headers: {'Authorization': 'Bearer $accesToken'});
@@ -58,6 +57,5 @@ class JexiaDefaultShoppingListDataProvider implements IDefaultShoppingListDataPr
         }
 
   }
-
 
 }
