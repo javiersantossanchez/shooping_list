@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:shoopinglist/widgets/ShoppingItemListWidget.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import '../ShoppingScheduleForm.dart';
+import 'ShoppingScheduleFormWidget.dart';
 import '../dtos/ShoppingScheduleItem.dart';
 import 'ShoppingItemScreenWidget.dart';
 

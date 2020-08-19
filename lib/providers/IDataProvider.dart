@@ -8,15 +8,26 @@ import 'package:shoopinglist/parsers/FileParser.dart'; //to convert json to maps
 
 abstract class IDataProvider {
 
+  final List<ShoppingScheduleItem> info = new List();
+
+  Future<List<ShoppingItem>> getShoppingList(int id) async {
+    ShoppingScheduleItem v = info.firstWhere((item) => item.id == id);
+
+    return v.shoppingList;
+  }
+
+  Future<void> createNewShoppingList(
+      ShoppingScheduleItem newShoppingList) async {
+    this.info.add(newShoppingList);
+    this.updateShoppingList();
+  }
+
+  Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
+    this.info.remove(shoppingListToDelete);
+    this.updateShoppingList();
+  }
 
   Future<List<ShoppingScheduleItem>> getScheduler() ;
-
-
-  Future<List<ShoppingItem>> getShoppingList(int id) ;
-
-  Future<void> createNewShoppingList(ShoppingScheduleItem newShoppingList) ;
-
-  Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete);
 
   Future<void> updateShoppingList();
 }

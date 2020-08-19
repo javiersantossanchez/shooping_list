@@ -1,16 +1,8 @@
-import 'package:path_provider/path_provider.dart';
 import 'package:shoopinglist/dtos/ShoppingItem.dart';
-import 'dart:io';
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
-import 'package:shoopinglist/parsers/FileParser.dart';
-import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
-import 'package:shoopinglist/providers/IDefaultShoppingListDataProvider.dart';
-import 'package:shoopinglist/providers/StaticDefaultShoppingListDataProvider.dart';
 import 'package:shoopinglist/providers/authenticator/JexiaAuthenticator.dart';
 
-import 'IDataProvider.dart';
 
 import 'package:http/http.dart' as http;
 
