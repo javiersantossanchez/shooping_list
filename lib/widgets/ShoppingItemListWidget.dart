@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import '../dtos/ShoppingItem.dart';
+import '../dtos/CatalogueItem.dart';
 
 class ShoppingItemListWidget extends StatefulWidget {
 
@@ -17,7 +17,7 @@ class ShoppingItemListWidget extends StatefulWidget {
 
 class ShoppingItemListState extends State<ShoppingItemListWidget> {
 
-  List<ShoppingItem> _listItems ;
+  List<CatalogueItem> _listItems ;
 
   final int id;
 
@@ -29,7 +29,7 @@ class ShoppingItemListState extends State<ShoppingItemListWidget> {
     this._reload();
   }
 
-  Widget getSelectIconButton(ShoppingItem currentItem){
+  Widget getSelectIconButton(CatalogueItem currentItem){
     return IconButton(
       icon: Icon(
         currentItem.selected? Icons.check_circle: Icons.radio_button_unchecked ,
@@ -51,7 +51,7 @@ class ShoppingItemListState extends State<ShoppingItemListWidget> {
     ));
   }
 
-  Widget _getItemView(ShoppingItem currentItem, BuildContext context) {
+  Widget _getItemView(CatalogueItem currentItem, BuildContext context) {
     return ListTile(
       title: Text(
         currentItem.description,
@@ -82,7 +82,7 @@ class ShoppingItemListState extends State<ShoppingItemListWidget> {
     );
   }
   
-  void _test(ShoppingItem currentItem){
+  void _test(CatalogueItem currentItem){
     ShoppingListService service = ShoppingListService();
     setState((){
       currentItem.switchSelectedState();

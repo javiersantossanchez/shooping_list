@@ -1,15 +1,21 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shoopinglist/jexia/providers/connector/JexiaConnectionConfiguration.dart';
 
+
+
+///
+///  Singleton to authenticate on Jexia service.
+///
 class JexiaAuthenticator {
 
   static final JexiaAuthenticator _instance = new JexiaAuthenticator._internal();
 
-  final String _baseUrl ="https://2b23210d-91d7-4a37-a1b3-3a7a30b20e9c.app.jexia.com/";
-
   final String _authPath = 'auth';
 
   String _token;
+
+  final JexiaConnectionConfiguration connectorConfiguration = new JexiaConnectionConfiguration();
 
   factory JexiaAuthenticator() {
     return _instance;
@@ -22,7 +28,7 @@ class JexiaAuthenticator {
     if(_token == null) {
       try {
         print('Connecting to authentication with Jexia');
-        final response = await http.post(_baseUrl + _authPath, body: jsonEncode(
+        final response = await http.post(this.connectorConfiguration.getUriToEndPoint(_authPath), body: jsonEncode(
             <String, String>{
               'method': 'apk',
               'key': 'd313ed1b-dc27-4aa2-aeb5-72c83a9c7b3f',

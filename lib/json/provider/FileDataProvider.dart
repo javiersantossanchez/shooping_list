@@ -1,13 +1,12 @@
 import 'package:path_provider/path_provider.dart';
-import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
+import 'package:shoopinglist/dtos/PurchaseList.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 
-import 'IDataProvider.dart';
+import '../../providers/IDataProvider.dart';
 
 class FileDataProvider extends IDataProvider{
 
@@ -36,7 +35,7 @@ class FileDataProvider extends IDataProvider{
 
 
 
-  Future<List<ShoppingScheduleItem>> getScheduler() async {
+  Future<List<PurchaseList>> getScheduler() async {
     final file = await _localFile;
 
     if (info == null || info.isEmpty) {
@@ -44,7 +43,7 @@ class FileDataProvider extends IDataProvider{
         file.createSync();
       }
       String contents = await file.readAsString();
-      List<ShoppingScheduleItem> itemsFromFile = _parser.parser(contents);
+      List<PurchaseList> itemsFromFile = _parser.parser(contents);
       if(itemsFromFile != null) {
         info.addAll(itemsFromFile);
       }

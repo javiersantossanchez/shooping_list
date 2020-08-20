@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
+import 'package:shoopinglist/dtos/PurchaseList.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 
 void main() {
@@ -12,7 +12,7 @@ void main() {
           '"shoppingList": [{"description": "Item 1","ready": false},{"description": "Item 2","ready": false}]'
           '}]';
 
-      List<ShoppingScheduleItem> result = parser.parser(text);
+      List<PurchaseList> result = parser.parser(text);
       bool allValid = true;
       allValid &= result.length == 1;
       allValid &= result.first.id == 1;
@@ -30,7 +30,7 @@ void main() {
           '"id": 1'
           '}]';
 
-      List<ShoppingScheduleItem> result = parser.parser(text);
+      List<PurchaseList> result = parser.parser(text);
       expect(result, null);
 
   });
@@ -43,7 +43,7 @@ void main() {
           '"shoppingList": [{"description": "Item 1","ready": false},{"description": "Item 2","ready": false}]'
           '}]';
 
-      List<ShoppingScheduleItem> result = parser.parser(text);
+      List<PurchaseList> result = parser.parser(text);
       expect(result, null);
 
   });
@@ -57,7 +57,7 @@ void main() {
           '"shoppingList": [{"description": "Item 1","ready": false},{"description": "Item 2","ready": false}]'
           '}]';
 
-      List<ShoppingScheduleItem> result = parser.parser(text);
+      List<PurchaseList> result = parser.parser(text);
       expect(result, null);
 
   });
@@ -71,7 +71,7 @@ void main() {
           '"shoppingList": ['
           '}]';
 
-      List<ShoppingScheduleItem> result = parser.parser(text);
+      List<PurchaseList> result = parser.parser(text);
       expect(result, null);
 
   });
@@ -79,14 +79,14 @@ void main() {
   test('Parser with a empty string', () {
       FileParser parser = new FileParser();
       String text = '';
-      List<ShoppingScheduleItem> result = parser.parser(text);
+      List<PurchaseList> result = parser.parser(text);
       expect(result, null);
   });
 
   test('Parser with null as parameter', () {
       FileParser parser = new FileParser();
       String text;
-      List<ShoppingScheduleItem> result = parser.parser(text);
+      List<PurchaseList> result = parser.parser(text);
       expect(result, null);
   });
 

@@ -1,16 +1,15 @@
-import 'package:path_provider/path_provider.dart';
-import 'package:shoopinglist/dtos/ShoppingItem.dart';
-import 'dart:io';
+import 'package:shoopinglist/dtos/CatalogueItem.dart';
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
+import 'package:shoopinglist/dtos/PurchaseList.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 
-import 'IDataProvider.dart';
-import 'authenticator/JexiaAuthenticator.dart';
+import '../../providers/IDataProvider.dart';
 
 import 'package:http/http.dart' as http;
+
+import 'authenticator/JexiaAuthenticator.dart';
 
 class JexiaDataProvider extends IDataProvider{
 
@@ -33,7 +32,7 @@ class JexiaDataProvider extends IDataProvider{
 
   JexiaDataProvider._internal();
 
-  Future<List<ShoppingScheduleItem>> getScheduler() async {
+  Future<List<PurchaseList>> getScheduler() async {
 
     if (info == null || info.isEmpty) {
       String accesToken = await authenticator.authenticate();
@@ -41,7 +40,7 @@ class JexiaDataProvider extends IDataProvider{
       final result = await http.get(_baseUrl + _listItemsDefaultPath,
           headers: {'Authorization': 'Bearer $accesToken'});
 
-      List<ShoppingScheduleItem> itemsFromFile = _parser.parser(result.body);
+      List<PurchaseList> itemsFromFile = _parser.parser(result.body);
       if(itemsFromFile != null) {
         info.addAll(itemsFromFile);
       }
@@ -49,19 +48,19 @@ class JexiaDataProvider extends IDataProvider{
     return info;
   }
 
-  Future<List<ShoppingItem>> getShoppingList(int id) async {
-    ShoppingScheduleItem v = info.firstWhere((item) => item.id == id);
+  Future<List<CatalogueItem>> getShoppingList(int id) async {
+    PurchaseList v = info.firstWhere((item) => item.id == id);
 
     return v.shoppingList;
   }
 
   Future<void> createNewShoppingList(
-      ShoppingScheduleItem newShoppingList) async {
+      PurchaseList newShoppingList) async {
     this.info.add(newShoppingList);
     this.updateShoppingList();
   }
 
-  Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
+  Future<void> deleteShoppingList(PurchaseList shoppingListToDelete) async{
     this.info.remove(shoppingListToDelete);
     this.updateShoppingList();
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shoopinglist/dtos/ShoppingItem.dart';
+import 'package:shoopinglist/dtos/CatalogueItem.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import '../dtos/ShoppingScheduleItem.dart';
+import '../dtos/PurchaseList.dart';
 
 class ShoppingScheduleFormWidget extends StatefulWidget {
   @override
@@ -14,11 +14,11 @@ class ShoppingScheduleFormWidget extends StatefulWidget {
 class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   DateTime _selectedDate;
 
-  List<ShoppingItem> _items;
+  List<CatalogueItem> _items;
 
-  List<ShoppingItem> _selectedItems;
+  List<CatalogueItem> _selectedItems;
 
-  ShoppingScheduleItem scheduleItem;
+  PurchaseList scheduleItem;
 
   final ShoppingListService _service = ShoppingListService();
 
@@ -84,7 +84,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   }
 
   // #docregion _buildRow
-  Widget _buildRow(ShoppingItem pair, BuildContext context) {
+  Widget _buildRow(CatalogueItem pair, BuildContext context) {
     return ListTile(
       title: Text(
         pair.description,

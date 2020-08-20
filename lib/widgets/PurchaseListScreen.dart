@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
 import 'ShoppingScheduleFormWidget.dart';
-import 'ShoppingScheduleListWidget.dart';
+import 'PurchaseListListingWidget.dart';
 
-class ShoppingScheduleScreenWidget extends StatefulWidget {
+class PurchaseListScreen extends StatefulWidget {
   @override
-  ShoppingScheduleScreenState createState() => ShoppingScheduleScreenState();
+  PurchaseListScreenState createState() => PurchaseListScreenState();
 }
 
-class ShoppingScheduleScreenState extends State<ShoppingScheduleScreenWidget> {
+class PurchaseListScreenState extends State<PurchaseListScreen> {
   final ShoppingListService _service = ShoppingListService();
 
 
@@ -19,10 +19,10 @@ class ShoppingScheduleScreenState extends State<ShoppingScheduleScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shopping day'),
+        title: Text('Shopping day  aaaaaa'),
 
       ),
-      body: ShoppingScheduleListWidget(),
+      body: PurchaseListListingWidget(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => this.onClickAddButton(context),
