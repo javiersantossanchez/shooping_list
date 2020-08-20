@@ -1,33 +1,37 @@
-import 'package:shoopinglist/dtos/ShoppingItem.dart';
+import 'package:shoopinglist/dtos/CatalogueItem.dart';
 
-import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
+import 'package:shoopinglist/dtos/PurchaseList.dart';
 import 'package:shoopinglist/providers/IDataProvider.dart';
 
 
 class MockDataProvider implements IDataProvider{
 
-  List<ShoppingScheduleItem> _info = new List();
+  List<PurchaseList> _info = new List();
 
-  set info(List<ShoppingScheduleItem> value) {
+  set info(List<PurchaseList> value) {
     _info = value;
   }
 
-  Future<List<ShoppingScheduleItem>> getScheduler() async {
+  Future<List<PurchaseList>> getScheduler() async {
       return Future.value(_info);
   }
 
-  Future<List<ShoppingItem>> getShoppingList(int id) async {
+  Future<List<CatalogueItem>> getShoppingList(int id) async {
   }
 
   Future<void> createNewShoppingList(
-      ShoppingScheduleItem newShoppingList) async {
+      PurchaseList newShoppingList) async {
   }
 
-  Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
+  Future<void> deleteShoppingList(PurchaseList shoppingListToDelete) async{
   }
 
   @override
   Future<void> updateShoppingList() {
     return null;
   }
+
+  @override
+  // TODO: implement info
+  List<PurchaseList> get info => null;
 }

@@ -2,21 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import '../dtos/ShoppingItem.dart';
+import '../dtos/CatalogueItem.dart';
 import 'ShoppingItemListWidget.dart';
 
-class ShoppingItemScreenWidget extends StatefulWidget {
+class PurchaseListDetailMainScreenWidget extends StatefulWidget {
 
   final int id;
 
-  ShoppingItemScreenWidget(this.id);
+  PurchaseListDetailMainScreenWidget(this.id);
 
   @override
   ShoppingItemScreenState createState() => ShoppingItemScreenState(this.id);
 
 }
 
-class ShoppingItemScreenState extends State<ShoppingItemScreenWidget> {
+class ShoppingItemScreenState extends State<PurchaseListDetailMainScreenWidget> {
 
   final int _id;
 

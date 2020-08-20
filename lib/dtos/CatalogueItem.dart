@@ -1,10 +1,10 @@
-class ShoppingItem  {
+class CatalogueItem  {
 
   final String description;
 
   bool _selected;
 
-  ShoppingItem(String description, bool selected):
+  CatalogueItem(String description, bool selected):
     this.description = description,
     this._selected = selected;
 

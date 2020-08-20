@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shoopinglist/dtos/ShoppingItem.dart';
+import 'package:shoopinglist/dtos/CatalogueItem.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import 'dtos/ShoppingScheduleItem.dart';
+import '../dtos/PurchaseList.dart';
 
 class ShoppingScheduleFormWidget extends StatefulWidget {
   @override
@@ -14,13 +14,26 @@ class ShoppingScheduleFormWidget extends StatefulWidget {
 class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
   DateTime _selectedDate;
 
-  List<ShoppingItem> _items;
+  List<CatalogueItem> _items;
 
-  List<ShoppingItem> _selectedItems;
+  List<CatalogueItem> _selectedItems;
 
-  ShoppingScheduleItem scheduleItem;
+  PurchaseList scheduleItem;
+
+  final ShoppingListService _service = ShoppingListService();
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  // of the TextField.
+  final myController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+
 
   void saveSchedule (){
     ShoppingListService service = ShoppingListService();
@@ -58,7 +71,8 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
       return new Container();
     }
     Divider div = new Divider(color: Colors.blue,);
-    return new Expanded(
+    return new //Column(children: <Widget>[
+      Expanded(
         child: ListView.separated(
           separatorBuilder: (context, index) => div,
           padding: const EdgeInsets.all(16.0),
@@ -66,10 +80,11 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
           itemBuilder: (context, index) => _buildRow(_items[index], context)
         )
       );
+    //]);
   }
 
   // #docregion _buildRow
-  Widget _buildRow(ShoppingItem pair, BuildContext context) {
+  Widget _buildRow(CatalogueItem pair, BuildContext context) {
     return ListTile(
       title: Text(
         pair.description,
@@ -126,18 +141,53 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text('DateTime Picker'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.toc),
+            onPressed: () => fdf(context),
+          )
+        ],
       ),
       body: Column(children: <Widget>[
         _getDatePickerView(),
         _getListItemView(),
         RaisedButton(
           onPressed: this._selectedDate == null? null : ()=> onClickSaveButton(context),
-          child: Text(
-        'Save',
+          child: Text('Save',
+          ),
         ),
-    )
         //      ,)
       ]),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  void fdf(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Create a new item'),
+          children: <Widget>[
+            TextField(
+              controller: myController,
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: 'Type the new item\'s name'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                _service.createNewItemOnShoppingList(myController.text);
+                Navigator.pop(context, true);
+              },
+              child: Text(
+                "Save",
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

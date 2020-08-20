@@ -6,8 +6,7 @@ import 'dart:convert';
 import 'package:shoopinglist/dtos/PurchaseList.dart';
 import 'package:shoopinglist/parsers/FileParser.dart'; //to convert json to maps and vice versa
 
-abstract class IDefaultShoppingListDataProvider {
+abstract class IDefaultShoppingListDataCreator {
 
-  Future<List<CatalogueItem>> getDefaultShoppingList() ;
-
+  Future<void> createNewItem(String newItemName);
 }
