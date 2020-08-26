@@ -1,59 +1,53 @@
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/CatalogueItem.dart';
-import 'package:shoopinglist/dtos/PurchaseList.dart';
+import 'package:shoopinglist/dtos/Product.dart';
+import 'package:shoopinglist/dtos/ShoppingScheduler.dart';
 import 'package:shoopinglist/json/provider/FileDataProvider.dart';
 
-import 'package:shoopinglist/providers/IDataProvider.dart';
-import 'package:shoopinglist/providers/IDefaultShoppingListDataCreator.dart';
+import 'package:shoopinglist/providers/ShoppingSchedulerProvider.dart';
+import 'package:shoopinglist/providers/ProductCatalogProvider.dart';
 
-import 'package:shoopinglist/providers/IDefaultShoppingListDataProvider.dart';
-import 'package:shoopinglist/jexia/providers/JexiaDefaultShoppingListDataCreator.dart';
-import 'package:shoopinglist/jexia/providers/JexiaDefaultShoppingListDataProvider.dart';
+import 'package:shoopinglist/jexia/providers/JexiaProductCatalogProvider.dart';
 
 class ShoppingListService {
 
 
-  final IDataProvider _dataProvider;
-
-  final IDefaultShoppingListDataProvider _defaultShoppingListDataProvider;
-
-  final IDefaultShoppingListDataCreator __defaultShoppingListDataCreator;
+  final ShoppingSchedulerProvider _dataProvider;
 
 
+  final ProductCatalogProvider __defaultShoppingListDataCreator;
 
-  ShoppingListService({IDataProvider dataProvider, IDefaultShoppingListDataProvider defaultShoppingListDataProvider, IDefaultShoppingListDataCreator defaultShoppingListDataCreator}):
+
+
+  ShoppingListService({ShoppingSchedulerProvider dataProvider, ProductCatalogProvider defaultShoppingListDataCreator}):
         this._dataProvider = dataProvider ?? new FileDataProvider() ,
-        this._defaultShoppingListDataProvider = defaultShoppingListDataProvider?? new JexiaDefaultShoppingListDataProvider(),
-        this.__defaultShoppingListDataCreator = defaultShoppingListDataCreator?? new JexiaDefaultShoppingListDataCreator();
+        this.__defaultShoppingListDataCreator = defaultShoppingListDataCreator?? new JexiaProductCatalogProvider();
 
-  Future<List<PurchaseList>> loadShoppingDays() async {
-    return await this._dataProvider.getScheduler();
+  Future<List<ShoppingScheduler>> loadShoppingDays() async {
+    return await this._dataProvider.getShoppingSchedulerList();
   }
 
-  Future<List<CatalogueItem>> loadShoppingList(int id){
-    return this._dataProvider.getShoppingList(id);
+  Future<List<Product>> loadShoppingList(int id){
+    return this._dataProvider.getProductList(id);
   }
 
 
-  Future<List<CatalogueItem>> getDefaultShoppingList() async{
-    return this._defaultShoppingListDataProvider.getDefaultShoppingList();
-
-
+  Future<List<Product>> getDefaultShoppingList() async{
+    return this.__defaultShoppingListDataCreator.getProductCatalog();
   }
 
 
   void createNewItemOnShoppingList(String newItemName ) {
-    __defaultShoppingListDataCreator.createNewItem(newItemName);
+    __defaultShoppingListDataCreator.createNewProduct(newItemName);
   }
 
-  void createSchuelde(DateTime selectedDate, List<CatalogueItem> listItem ) {
-    PurchaseList newShoppingList = (ShoppingScheduleItemBuilder((new DateTime.now()).millisecondsSinceEpoch,selectedDate)..shoppingList = listItem).build();
-    _dataProvider.createNewShoppingList(newShoppingList);
+  void createSchuelde(DateTime selectedDate, List<Product> listItem ) {
+    ShoppingScheduler newShoppingList = (ShoppingScheduleItemBuilder((new DateTime.now()).millisecondsSinceEpoch,selectedDate)..shoppingList = listItem).build();
+    _dataProvider.createShoppingScheduler(newShoppingList);
   }
 
-  void deleteSchuelde(PurchaseList shoppingListToDelete) {
-    _dataProvider.deleteShoppingList(shoppingListToDelete);
+  void deleteSchuelde(ShoppingScheduler shoppingListToDelete) {
+    _dataProvider.deleteShoppingScheduler(shoppingListToDelete);
   }
 
   void updateShoopingItem(){

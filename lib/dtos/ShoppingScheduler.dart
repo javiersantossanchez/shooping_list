@@ -1,16 +1,16 @@
 
-import 'CatalogueItem.dart';
+import 'Product.dart';
 
-class PurchaseList  {
+class ShoppingScheduler  {
 
   final int id;
 
    final DateTime shoppingDate;
 
-   final List<CatalogueItem> shoppingList;
+   final List<Product> shoppingList;
 
 
-  PurchaseList._builder( ShoppingScheduleItemBuilder builder):
+  ShoppingScheduler._builder( ShoppingScheduleItemBuilder builder):
     this.id = builder.id,
     this.shoppingDate = builder.date, //TODO: IN a future is good practice validate a not null for this parameter
     this.shoppingList = builder.shoppingList
@@ -30,7 +30,7 @@ class ShoppingScheduleItemBuilder{
 
   DateTime _date;
 
-  List<CatalogueItem> shoppingList;
+  List<Product> shoppingList;
 
   int get id => _id;
 
@@ -38,8 +38,8 @@ class ShoppingScheduleItemBuilder{
 
  ShoppingScheduleItemBuilder(this._id, this._date);
 
-  PurchaseList build(){
-      return new PurchaseList._builder(this);
+  ShoppingScheduler build(){
+      return new ShoppingScheduler._builder(this);
   }
 
 

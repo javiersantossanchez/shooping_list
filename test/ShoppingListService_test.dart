@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shoopinglist/dtos/CatalogueItem.dart';
-import 'package:shoopinglist/dtos/PurchaseList.dart';
+import 'package:shoopinglist/dtos/Product.dart';
+import 'package:shoopinglist/dtos/ShoppingScheduler.dart';
 import 'package:shoopinglist/json/provider/FileDataProvider.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
@@ -12,26 +12,26 @@ void main() {
 
     MockDataProvider dataProvider = MockDataProvider();
 
-    PurchaseList item;
-    List<CatalogueItem> shoppingList;
-    List<PurchaseList> list = new List();
+    ShoppingScheduler item;
+    List<Product> shoppingList;
+    List<ShoppingScheduler> list = new List();
 
     shoppingList = new List();
-    shoppingList.add(new CatalogueItem('Test 1',false));
-    shoppingList.add(new CatalogueItem('Test 2',false));
-    shoppingList.add(new CatalogueItem('Test 3',false));
+    shoppingList.add(new Product('Test 1',false));
+    shoppingList.add(new Product('Test 2',false));
+    shoppingList.add(new Product('Test 3',false));
     item = (new ShoppingScheduleItemBuilder(1, DateTime.now())..shoppingList = shoppingList).build();
     list.add(item);
 
     shoppingList = new List();
-    shoppingList.add(new CatalogueItem('Test 4',false));
-    shoppingList.add(new CatalogueItem('Test 5',false));
+    shoppingList.add(new Product('Test 4',false));
+    shoppingList.add(new Product('Test 5',false));
     item = (new ShoppingScheduleItemBuilder(1, DateTime.now())..shoppingList = shoppingList).build();
     list.add(item);
-    dataProvider.info = list;
+    dataProvider.shoppingSchedulerList = list;
 
     ShoppingListService service = new ShoppingListService(dataProvider: dataProvider);
-    List<PurchaseList> result = await service.loadShoppingDays();
+    List<ShoppingScheduler> result = await service.loadShoppingDays();
 
     expect(result, list);
   });

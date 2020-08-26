@@ -1,8 +1,8 @@
 
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/CatalogueItem.dart';
-import 'package:shoopinglist/dtos/PurchaseList.dart';
+import 'package:shoopinglist/dtos/Product.dart';
+import 'package:shoopinglist/dtos/ShoppingScheduler.dart';
 
 import 'IShoppingScheduleParse.dart';
 
@@ -18,7 +18,7 @@ class FileParser implements IShoppingScheduleParse{
 
   final _shoppingScheduleIdKey = "id";
 
-  PurchaseList _parseItem(dynamic item) {
+  ShoppingScheduler _parseItem(dynamic item) {
     DateTime date;
     if(item[_shoppingScheduleDateKey] == null){
       print("The shoppingDate property is no present");
@@ -35,13 +35,13 @@ class FileParser implements IShoppingScheduleParse{
       return null;
     }
 
-    List<CatalogueItem> listItems = shoppingList.map((item) => CatalogueItem(item[_shoppingItemDescriptionKey], item[_shoppingItemReadyKey])).toList();
+    List<Product> listItems = shoppingList.map((item) => Product(item[_shoppingItemDescriptionKey], item[_shoppingItemReadyKey])).toList();
     return  (ShoppingScheduleItemBuilder(item[_shoppingScheduleIdKey],date)
             ..shoppingList = listItems
            ).build();
   }
 
-  List<PurchaseList> parser (String text) {
+  List<ShoppingScheduler> parser (String text) {
     List<dynamic> jsonFileContent;
     if(text == null || text.isEmpty){
       return null;
@@ -52,7 +52,7 @@ class FileParser implements IShoppingScheduleParse{
       print("The file has invalid format $exception");
       return null;
     }
-    List<PurchaseList> result = jsonFileContent.map((item) => _parseItem(item)).where((item) => item != null).toList();
+    List<ShoppingScheduler> result = jsonFileContent.map((item) => _parseItem(item)).where((item) => item != null).toList();
     if(result.isEmpty){
       return null;
     }

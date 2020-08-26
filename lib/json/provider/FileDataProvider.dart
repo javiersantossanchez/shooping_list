@@ -2,13 +2,13 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/PurchaseList.dart';
+import 'package:shoopinglist/dtos/ShoppingScheduler.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 
-import '../../providers/IDataProvider.dart';
+import '../../providers/ShoppingSchedulerProvider.dart';
 
-class FileDataProvider extends IDataProvider{
+class FileDataProvider extends ShoppingSchedulerProvider{
 
   static final FileDataProvider _instance = new FileDataProvider._internal();
 
@@ -35,20 +35,20 @@ class FileDataProvider extends IDataProvider{
 
 
 
-  Future<List<PurchaseList>> getScheduler() async {
+  Future<List<ShoppingScheduler>> getShoppingSchedulerList() async {
     final file = await _localFile;
 
-    if (info == null || info.isEmpty) {
+    if (shoppingSchedulerList == null || shoppingSchedulerList.isEmpty) {
       if( !file.existsSync() ){
         file.createSync();
       }
       String contents = await file.readAsString();
-      List<PurchaseList> itemsFromFile = _parser.parser(contents);
+      List<ShoppingScheduler> itemsFromFile = _parser.parser(contents);
       if(itemsFromFile != null) {
-        info.addAll(itemsFromFile);
+        shoppingSchedulerList.addAll(itemsFromFile);
       }
     }
-    return info;
+    return shoppingSchedulerList;
   }
 
 
@@ -56,6 +56,6 @@ class FileDataProvider extends IDataProvider{
   Future<void> updateShoppingList() async{
     final file = await _localFile;
     //TODO: I need move this json.encode statement to parse class
-    file.writeAsStringSync(json.encode(this.info));
+    file.writeAsStringSync(json.encode(this.shoppingSchedulerList));
   }
 }

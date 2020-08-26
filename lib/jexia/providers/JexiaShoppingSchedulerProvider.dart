@@ -1,19 +1,19 @@
-import 'package:shoopinglist/dtos/CatalogueItem.dart';
+import 'package:shoopinglist/dtos/Product.dart';
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/PurchaseList.dart';
+import 'package:shoopinglist/dtos/ShoppingScheduler.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 
-import '../../providers/IDataProvider.dart';
+import '../../providers/ShoppingSchedulerProvider.dart';
 
 import 'package:http/http.dart' as http;
 
 import 'authenticator/JexiaAuthenticator.dart';
 
-class JexiaDataProvider extends IDataProvider{
+class JexiaShoppingSchedulerProvider extends ShoppingSchedulerProvider{
 
-  static final JexiaDataProvider _instance = new JexiaDataProvider._internal();
+  static final JexiaShoppingSchedulerProvider _instance = new JexiaShoppingSchedulerProvider._internal();
 
   final String _baseUrl ="https://2b23210d-91d7-4a37-a1b3-3a7a30b20e9c.nl00.app.jexia.com/";
 
@@ -26,42 +26,42 @@ class JexiaDataProvider extends IDataProvider{
 
 
 
-  factory JexiaDataProvider() {
+  factory JexiaShoppingSchedulerProvider() {
     return _instance;
   }
 
-  JexiaDataProvider._internal();
+  JexiaShoppingSchedulerProvider._internal();
 
-  Future<List<PurchaseList>> getScheduler() async {
+  Future<List<ShoppingScheduler>> getShoppingSchedulerList() async {
 
-    if (info == null || info.isEmpty) {
+    if (shoppingSchedulerList == null || shoppingSchedulerList.isEmpty) {
       String accesToken = await authenticator.authenticate();
 
       final result = await http.get(_baseUrl + _listItemsDefaultPath,
           headers: {'Authorization': 'Bearer $accesToken'});
 
-      List<PurchaseList> itemsFromFile = _parser.parser(result.body);
+      List<ShoppingScheduler> itemsFromFile = _parser.parser(result.body);
       if(itemsFromFile != null) {
-        info.addAll(itemsFromFile);
+        shoppingSchedulerList.addAll(itemsFromFile);
       }
     }
-    return info;
+    return shoppingSchedulerList;
   }
 
-  Future<List<CatalogueItem>> getShoppingList(int id) async {
-    PurchaseList v = info.firstWhere((item) => item.id == id);
+  Future<List<Product>> getProductList(int id) async {
+    ShoppingScheduler v = shoppingSchedulerList.firstWhere((item) => item.id == id);
 
     return v.shoppingList;
   }
 
-  Future<void> createNewShoppingList(
-      PurchaseList newShoppingList) async {
-    this.info.add(newShoppingList);
+  Future<void> createShoppingScheduler(
+      ShoppingScheduler newShoppingList) async {
+    this.shoppingSchedulerList.add(newShoppingList);
     this.updateShoppingList();
   }
 
-  Future<void> deleteShoppingList(PurchaseList shoppingListToDelete) async{
-    this.info.remove(shoppingListToDelete);
+  Future<void> deleteShoppingScheduler(ShoppingScheduler shoppingListToDelete) async{
+    this.shoppingSchedulerList.remove(shoppingListToDelete);
     this.updateShoppingList();
   }
 
@@ -72,7 +72,7 @@ class JexiaDataProvider extends IDataProvider{
     final result = await http.post(_baseUrl + _listItemsDefaultPath,
       headers: {'Authorization': 'Bearer $accesToken'},
       body: jsonEncode(<String, String>{
-        'info': json.encode(this.info),
+        'info': json.encode(this.shoppingSchedulerList),
       }),
     );
   }

@@ -1,19 +1,10 @@
-import 'package:path_provider/path_provider.dart';
-import 'package:shoopinglist/dtos/CatalogueItem.dart';
-import 'dart:io';
-import 'dart:convert';
+import 'package:shoopinglist/dtos/Product.dart';
 
-import 'package:shoopinglist/dtos/PurchaseList.dart';
-import 'package:shoopinglist/parsers/FileParser.dart';
-import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
-import 'package:shoopinglist/providers/IDefaultShoppingListDataProvider.dart';
-
-import 'IDataProvider.dart';
-
-import 'package:http/http.dart' as http;
+import 'package:shoopinglist/providers/ProductCatalogProvider.dart';
 
 
-class StaticDefaultShoppingListDataProvider implements IDefaultShoppingListDataProvider{
+
+class StaticDefaultShoppingListDataProvider implements ProductCatalogProvider{
 
   static final StaticDefaultShoppingListDataProvider _instance = new StaticDefaultShoppingListDataProvider._internal();
 
@@ -24,50 +15,55 @@ class StaticDefaultShoppingListDataProvider implements IDefaultShoppingListDataP
   StaticDefaultShoppingListDataProvider._internal();
 
   @override
-  Future<List<CatalogueItem>> getDefaultShoppingList() async {
-    List<CatalogueItem> listToReturn = new List();
-    listToReturn.add(new CatalogueItem("Arroz",false));
-    listToReturn.add(new CatalogueItem("Pasta",false));
-    listToReturn.add(new CatalogueItem("Jabon de ropa",false));
-    listToReturn.add(new CatalogueItem("Pasta de dientes",false));
-    listToReturn.add(new CatalogueItem("Cafe",false));
-    listToReturn.add(new CatalogueItem("Papas",false));
-    listToReturn.add(new CatalogueItem("Aceite de oliva",false));
-    listToReturn.add(new CatalogueItem("Banana",false));
-    listToReturn.add(new CatalogueItem("Fresa",false));
-    listToReturn.add(new CatalogueItem("Tomate",false));
-    listToReturn.add(new CatalogueItem("Leche",false));
-    listToReturn.add(new CatalogueItem("Pañales",false));
-    listToReturn.add(new CatalogueItem("Jabon de Ainara",false));
-    listToReturn.add(new CatalogueItem("Atun",false));
-    listToReturn.add(new CatalogueItem("Diablito",false));
-    listToReturn.add(new CatalogueItem("Zanahorias",false));
-    listToReturn.add(new CatalogueItem("Cebolla",false));
-    listToReturn.add(new CatalogueItem("Juegos",false));
-    listToReturn.add(new CatalogueItem("Jamon",false));
-    listToReturn.add(new CatalogueItem("Queso crema",false));
-    listToReturn.add(new CatalogueItem("Pan de sanwich",false));
-    listToReturn.add(new CatalogueItem("Yogurt",false));
-    listToReturn.add(new CatalogueItem("Carne molida",false));
-    listToReturn.add(new CatalogueItem("Pollo",false));
-    listToReturn.add(new CatalogueItem("Bisteck",false));
-    listToReturn.add(new CatalogueItem("Shampo",false));
-    listToReturn.add(new CatalogueItem("Acondicionador",false));
-    listToReturn.add(new CatalogueItem("Jabon de bañarse",false));
-    listToReturn.add(new CatalogueItem("Pimenton",false));
-    listToReturn.add(new CatalogueItem("Harina de cachapa",false));
-    listToReturn.add(new CatalogueItem("Harina pan",false));
-    listToReturn.add(new CatalogueItem("Harina de trigo",false));
-    listToReturn.add(new CatalogueItem("Mantequilla de mani",false));
-    listToReturn.add(new CatalogueItem("Mantequilla",false));
-    listToReturn.add(new CatalogueItem("Cereal",false));
-    listToReturn.add(new CatalogueItem("Compota",false));
-    listToReturn.add(new CatalogueItem("Mandarina",false));
-    listToReturn.add(new CatalogueItem("Aguacate",false));
-    listToReturn.add(new CatalogueItem("Toallitas clorox",false));
-    listToReturn.add(new CatalogueItem("Desinfectante",false));
+  Future<List<Product>> getProductCatalog() async {
+    List<Product> listToReturn = new List();
+    listToReturn.add(new Product("Arroz",false));
+    listToReturn.add(new Product("Pasta",false));
+    listToReturn.add(new Product("Jabon de ropa",false));
+    listToReturn.add(new Product("Pasta de dientes",false));
+    listToReturn.add(new Product("Cafe",false));
+    listToReturn.add(new Product("Papas",false));
+    listToReturn.add(new Product("Aceite de oliva",false));
+    listToReturn.add(new Product("Banana",false));
+    listToReturn.add(new Product("Fresa",false));
+    listToReturn.add(new Product("Tomate",false));
+    listToReturn.add(new Product("Leche",false));
+    listToReturn.add(new Product("Pañales",false));
+    listToReturn.add(new Product("Jabon de Ainara",false));
+    listToReturn.add(new Product("Atun",false));
+    listToReturn.add(new Product("Diablito",false));
+    listToReturn.add(new Product("Zanahorias",false));
+    listToReturn.add(new Product("Cebolla",false));
+    listToReturn.add(new Product("Juegos",false));
+    listToReturn.add(new Product("Jamon",false));
+    listToReturn.add(new Product("Queso crema",false));
+    listToReturn.add(new Product("Pan de sanwich",false));
+    listToReturn.add(new Product("Yogurt",false));
+    listToReturn.add(new Product("Carne molida",false));
+    listToReturn.add(new Product("Pollo",false));
+    listToReturn.add(new Product("Bisteck",false));
+    listToReturn.add(new Product("Shampo",false));
+    listToReturn.add(new Product("Acondicionador",false));
+    listToReturn.add(new Product("Jabon de bañarse",false));
+    listToReturn.add(new Product("Pimenton",false));
+    listToReturn.add(new Product("Harina de cachapa",false));
+    listToReturn.add(new Product("Harina pan",false));
+    listToReturn.add(new Product("Harina de trigo",false));
+    listToReturn.add(new Product("Mantequilla de mani",false));
+    listToReturn.add(new Product("Mantequilla",false));
+    listToReturn.add(new Product("Cereal",false));
+    listToReturn.add(new Product("Compota",false));
+    listToReturn.add(new Product("Mandarina",false));
+    listToReturn.add(new Product("Aguacate",false));
+    listToReturn.add(new Product("Toallitas clorox",false));
+    listToReturn.add(new Product("Desinfectante",false));
     return listToReturn;
   }
 
+  @override
+  Future<void> createNewProduct(String newItemName) {
+    // TODO: implement createNewProduct
+    return null;
+  }
 
 }

@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import 'ShoppingScheduleFormWidget.dart';
-import 'PurchaseListListingWidget.dart';
+import 'ShoppingScheduleFormScreen.dart';
+import 'ShoppingSchedulerListingWidget.dart';
 
-class PurchaseListScreen extends StatefulWidget {
+class ShoppingSchedulerCatalogScreen extends StatefulWidget {
   @override
-  PurchaseListScreenState createState() => PurchaseListScreenState();
+  ShoppingSchedulerCatalogScreenState createState() => ShoppingSchedulerCatalogScreenState();
 }
 
-class PurchaseListScreenState extends State<PurchaseListScreen> {
+class ShoppingSchedulerCatalogScreenState extends State<ShoppingSchedulerCatalogScreen> {
   final ShoppingListService _service = ShoppingListService();
 
 
@@ -22,7 +22,7 @@ class PurchaseListScreenState extends State<PurchaseListScreen> {
         title: Text('Shopping day  aaaaaa'),
 
       ),
-      body: PurchaseListListingWidget(),
+      body: ShoppingSchedulerListingWidget(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => this.onClickAddButton(context),
@@ -33,7 +33,7 @@ class PurchaseListScreenState extends State<PurchaseListScreen> {
 
   void onClickAddButton(BuildContext context) {
     print('The user click on add button');
-    ShoppingScheduleFormWidget widget = new ShoppingScheduleFormWidget();
+    ShoppingScheduleFormScreen widget = new ShoppingScheduleFormScreen();
     MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
     Navigator.push(context, router);
   }

@@ -2,25 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import '../dtos/CatalogueItem.dart';
-import 'ShoppingItemListWidget.dart';
+import '../dtos/Product.dart';
+import 'ProductListingWidget.dart';
 
-class PurchaseListDetailMainScreenWidget extends StatefulWidget {
+class ShoppingSchedulerDetailScreen extends StatefulWidget {
 
   final int id;
 
-  PurchaseListDetailMainScreenWidget(this.id);
+  ShoppingSchedulerDetailScreen(this.id);
 
   @override
-  ShoppingItemScreenState createState() => ShoppingItemScreenState(this.id);
+  ShoppingSchedulerDetailScreenState createState() => ShoppingSchedulerDetailScreenState(this.id);
 
 }
 
-class ShoppingItemScreenState extends State<PurchaseListDetailMainScreenWidget> {
+class ShoppingSchedulerDetailScreenState extends State<ShoppingSchedulerDetailScreen> {
 
   final int _id;
 
-  ShoppingItemScreenState(this._id);
+  ShoppingSchedulerDetailScreenState(this._id);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ShoppingItemScreenState extends State<PurchaseListDetailMainScreenWidget> 
         title: Text('Shopping day'),
       ),
       body:  Column(children: <Widget>[
-        ShoppingItemListWidget(this._id),
+        ProductListingWidget(this._id),
         RaisedButton(
           onPressed: () => Navigator.pop(context,),
           child: Text(
