@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shoopinglist/dtos/Product.dart';
 import 'package:shoopinglist/dtos/ShoppingScheduler.dart';
-import 'package:shoopinglist/json/provider/FileDataProvider.dart';
-import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
 import 'MockDataProvider.dart';

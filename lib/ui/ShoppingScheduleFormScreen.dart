@@ -24,16 +24,6 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormScreen> {
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  // of the TextField.
-  final myController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myController.dispose();
-    super.dispose();
-  }
-
 
   void saveSchedule (){
     ShoppingListService service = ShoppingListService();
@@ -141,12 +131,6 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('DateTime Picker'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.toc),
-            onPressed: () => fdf(context),
-          )
-        ],
       ),
       body: Column(children: <Widget>[
         _getDatePickerView(),
@@ -163,33 +147,4 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormScreen> {
       ),
     );
   }
-
-  void fdf(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text('Create a new item'),
-          children: <Widget>[
-            TextField(
-              controller: myController,
-              decoration: InputDecoration(
-                  border: InputBorder.none, hintText: 'Type the new item\'s name'),
-            ),
-            SimpleDialogOption(
-              onPressed: () {
-                _service.createNewItemOnShoppingList(myController.text);
-                Navigator.pop(context, true);
-              },
-              child: Text(
-                "Save",
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-
 }

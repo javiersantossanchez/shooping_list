@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
+import 'package:shoopinglist/ui/ProductCatalogManagementScreen.dart';
 
 import 'ShoppingScheduleFormScreen.dart';
 import 'ShoppingSchedulerListingWidget.dart';
+
+
+enum AdminOptions { Product_CATALOG_MANAGEMENT, }
 
 class ShoppingSchedulerCatalogScreen extends StatefulWidget {
   @override
@@ -11,15 +15,33 @@ class ShoppingSchedulerCatalogScreen extends StatefulWidget {
 }
 
 class ShoppingSchedulerCatalogScreenState extends State<ShoppingSchedulerCatalogScreen> {
-  final ShoppingListService _service = ShoppingListService();
+    AdminOptions _adminSelection;
 
 
+  Widget getAdminMenu(BuildContext context){
+     return
+       PopupMenuButton<AdminOptions>(
+         onSelected: (AdminOptions result) {
+           onClickGoToManagementProductCatalog(context);
+
+         },
+         itemBuilder: (BuildContext context) => <PopupMenuEntry<AdminOptions>>[
+           const PopupMenuItem<AdminOptions>(
+             value: AdminOptions.Product_CATALOG_MANAGEMENT,
+             child: Text('Product Catalog Management'),
+           ),
+         ],
+       );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Shopping day  aaaaaa'),
+        actions: <Widget>[
+          getAdminMenu(context),
+        ],
 
       ),
       body: ShoppingSchedulerListingWidget(),
@@ -30,6 +52,13 @@ class ShoppingSchedulerCatalogScreenState extends State<ShoppingSchedulerCatalog
     );
   }
 
+
+  void onClickGoToManagementProductCatalog(BuildContext context) {
+    print('The user click on to go management button');
+    ProductCatalogManagementScreen widget = new ProductCatalogManagementScreen();
+    MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
+    Navigator.push(context, router);
+  }
 
   void onClickAddButton(BuildContext context) {
     print('The user click on add button');
