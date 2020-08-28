@@ -19,13 +19,13 @@ class ProductCatalogManagementScreenState
 
 
   // of the TextField.
-  final myController = TextEditingController();
+
 
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    myController.dispose();
+
     super.dispose();
   }
 
@@ -124,6 +124,8 @@ class ProductCatalogManagementScreenState
   }
 
   void showDialogToCreateNewProduct(BuildContext context) {
+     var myController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
