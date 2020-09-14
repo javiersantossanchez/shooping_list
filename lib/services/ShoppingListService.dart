@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:shoopinglist/dtos/Product.dart';
 import 'package:shoopinglist/dtos/ShoppingScheduler.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shoopinglist/services/ShoppingListService.dart';
 import 'package:shoopinglist/ui/ProductCatalogManagementScreen.dart';
 
 import 'ShoppingScheduleFormScreen.dart';

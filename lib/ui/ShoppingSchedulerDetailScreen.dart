@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import '../dtos/Product.dart';
 import 'ProductListingWidget.dart';
 
 class ShoppingSchedulerDetailScreen extends StatefulWidget {
