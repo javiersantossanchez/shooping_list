@@ -162,6 +162,7 @@ class ProductCatalogManagementScreenState
             SimpleDialogOption(
               onPressed: () {
                 _service.createNewItemOnShoppingList(myController.text);
+                setState(() {});
                 myController.clear();
                 Navigator.pop(context, true);
               },
