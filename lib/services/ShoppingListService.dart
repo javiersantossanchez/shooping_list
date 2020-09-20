@@ -53,4 +53,8 @@ class ShoppingListService {
     _dataProvider.updateShoppingList();
   }
 
+  Future<bool> deleteProduct(String id){
+    return __defaultShoppingListDataCreator.deleteProduct(id);
+  }
+
 }

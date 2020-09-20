@@ -10,4 +10,9 @@ class JexiaConnectionConfiguration {
     return uri;
   }
 
+  Uri getUriWithParamToEndPoint(String endPoint,Map<String, String> params){
+    Uri uri = new Uri.https(_host, endPoint,params);
+    return uri;
+  }
+
 }

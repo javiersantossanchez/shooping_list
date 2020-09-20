@@ -35,7 +35,7 @@ class FileParser implements IShoppingScheduleParse{
       return null;
     }
 
-    List<Product> listItems = shoppingList.map((item) => Product(item[_shoppingItemDescriptionKey], item[_shoppingItemReadyKey])).toList();
+    List<Product> listItems = shoppingList.map((item) => Product(item[_shoppingItemDescriptionKey], item[_shoppingItemReadyKey],'1')).toList();
     return  (ShoppingScheduleItemBuilder(item[_shoppingScheduleIdKey],date)
             ..shoppingList = listItems
            ).build();

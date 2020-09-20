@@ -6,4 +6,6 @@ abstract class ProductCatalogProvider {
   Future<void> createNewProduct(String newItemName);
 
   Future<List<Product>> getProductCatalog() ;
+
+  Future<bool> deleteProduct(String id);
 }

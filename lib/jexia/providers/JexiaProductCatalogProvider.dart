@@ -39,12 +39,12 @@ class JexiaProductCatalogProvider implements  ProductCatalogProvider{
         'description': newItemName,
         }),
     );
-    return new Product(newItemName, false);
+    return new Product(newItemName, false, '123');
   }
 
   @override
   Future<List<Product>> getProductCatalog() async {
-
+    print('Getting product list from jexia server');
     try {
       String accessToken = await authenticator.authenticate();
 
@@ -53,7 +53,7 @@ class JexiaProductCatalogProvider implements  ProductCatalogProvider{
 
       List<dynamic> decode = json.decode(result.body);
 
-      return decode.map((item) => new Product(item['description'], false))
+      return decode.map((item) => new Product(item['description'], false,item['id']))
           .toList();
     }catch (e){
       print('There is a problem on connection with Jexia');
@@ -62,6 +62,20 @@ class JexiaProductCatalogProvider implements  ProductCatalogProvider{
 
     }
 
+  }
+
+  @override
+  Future<bool> deleteProduct(String id) async {
+    print('Deleting product from jexia server');
+
+    String accesToken = await authenticator.authenticate();
+
+    Map<String, String> queryParameters1 = {
+      "cond": "[{\"field\":\"id\"},\"=\",\"$id\"]"
+    };
+    final result = await http.delete(connectorConfiguration.getUriWithParamToEndPoint(_listItemsDefaultPath,queryParameters1),
+        headers: {'Authorization': 'Bearer $accesToken'});
+    return result.statusCode== 200;
   }
 
 }

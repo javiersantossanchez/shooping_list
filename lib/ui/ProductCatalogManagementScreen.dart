@@ -15,27 +15,6 @@ class ProductCatalogManagementScreenState
   final ShoppingListService _service = ShoppingListService();
 
 
-  Future<List<Product>> _futureOfItems;
-
-
-  // of the TextField.
-
-
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    ShoppingListService service = ShoppingListService();
-    _futureOfItems = service.getDefaultShoppingList();
-  }
-
   Widget _buildListingView(List<Product> productLst) {
     //TODO: Verify, is this validation necessary now??  The FutureBuilder is used to build the widget
     if (productLst == null) {
@@ -61,20 +40,27 @@ class ProductCatalogManagementScreenState
         pair.description == null ? '' : pair.description,
       ),
       trailing: Icon(
-        pair.selected ? Icons.check_circle : Icons.radio_button_unchecked,
+        Icons.delete,
         color: Colors.blue,
         size: 30,
       ),
-      onTap: () {},
+      onTap: () {
+        ShoppingListService service = ShoppingListService();
+        service.deleteProduct(pair.id)
+            .then(( productWasCreated ) => setState(() {}));
+
+      },
     );
   }
 
   Widget _buildBody() {
+    print('Reload list');
     return Column(children: <Widget>[
       FutureBuilder<List<Product>>(
-          future: _futureOfItems,
+          future: _service.getDefaultShoppingList(),
           builder:
               (BuildContext context, AsyncSnapshot<List<Product>> productList) {
+            print(productList.hasData);
             if (productList.hasData) {
               return _buildListingView(productList.data);
             } else {
@@ -103,7 +89,7 @@ class ProductCatalogManagementScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('DateTime Picker'),
+        title: Text('Product Management'),
       ),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
