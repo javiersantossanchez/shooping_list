@@ -39,6 +39,7 @@ class JexiaProductCatalogProvider implements  ProductCatalogProvider{
         'description': newItemName,
         }),
     );
+     ///TODO: get the id from the response object
     return new Product(newItemName, false, '123');
   }
 

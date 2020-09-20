@@ -26,20 +26,18 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormScreen> {
 
 
   void saveSchedule (){
-    ShoppingListService service = ShoppingListService();
-    service.createSchuelde(_selectedDate, _selectedItems);
-
+    List<Product> items = new List();
+    for (var i = 0; i < _selectedItems.length; i++) {
+      items.add(new Product.Unselected(_selectedItems[i].description, _selectedItems[i].id));
+    }
+    _service.createSchuelde(_selectedDate, items);
   }
 
 
   @override
   void initState() {
     super.initState();
-    ShoppingListService service = ShoppingListService();
-    service.getDefaultShoppingList().then((result) => setState(() {this._items = result;}));
-
-
-
+    _service.getDefaultShoppingList().then((result) => setState(() {this._items = result;}));
   }
 
   Future<Null> _selectDate(BuildContext context) async {
