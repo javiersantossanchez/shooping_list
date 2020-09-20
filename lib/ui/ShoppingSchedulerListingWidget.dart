@@ -1,24 +1,19 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shoopinglist/widgets/ShoppingItemListWidget.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import '../ShoppingScheduleForm.dart';
-import '../dtos/ShoppingScheduleItem.dart';
-import 'ShoppingItemScreenWidget.dart';
+import '../dtos/ShoppingScheduler.dart';
+import 'ShoppingSchedulerDetailScreen.dart';
 
-class ShoppingScheduleListWidget extends StatefulWidget {
+class ShoppingSchedulerListingWidget extends StatefulWidget {
   @override
   ShoppingScheduleListState createState() => ShoppingScheduleListState();
 }
 
-class ShoppingScheduleListState extends State<ShoppingScheduleListWidget> {
+class ShoppingScheduleListState extends State<ShoppingSchedulerListingWidget> {
 
-  final List<ShoppingScheduleItem> _listItems = new List();
+  final List<ShoppingScheduler> _listItems = new List();
 
   final ShoppingListService _service = ShoppingListService();
 
@@ -29,12 +24,12 @@ class ShoppingScheduleListState extends State<ShoppingScheduleListWidget> {
   }
 
   @override
-  void didUpdateWidget(ShoppingScheduleListWidget oldWidget) {
+  void didUpdateWidget(ShoppingSchedulerListingWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     this.reloadState();
   }
 
-  Widget getViewDetailIconButton(ShoppingScheduleItem currentItem, BuildContext context){
+  Widget getViewDetailIconButton(ShoppingScheduler currentItem, BuildContext context){
     return IconButton(
       icon: Icon(
         Icons.arrow_forward_ios,
@@ -45,7 +40,7 @@ class ShoppingScheduleListState extends State<ShoppingScheduleListWidget> {
     );
   }
 
-  Widget getDeleteIconButton(ShoppingScheduleItem currentItem){
+  Widget getDeleteIconButton(ShoppingScheduler currentItem){
     return IconButton(
       icon: Icon(
         Icons.delete,
@@ -56,7 +51,7 @@ class ShoppingScheduleListState extends State<ShoppingScheduleListWidget> {
     );
   }
 
-  Widget _getItemView(ShoppingScheduleItem currentItem, BuildContext context) {
+  Widget _getItemView(ShoppingScheduler currentItem, BuildContext context) {
     return ListTile(
       title: Text(
         new DateFormat.yMMMd().format(currentItem.shoppingDate),
@@ -94,14 +89,14 @@ class ShoppingScheduleListState extends State<ShoppingScheduleListWidget> {
   }
 
 
-  void onClickViewDetailIcon(ShoppingScheduleItem selectedItem, BuildContext context) {
+  void onClickViewDetailIcon(ShoppingScheduler selectedItem, BuildContext context) {
     print('The user click on view detail icon');
-    Widget widget = ShoppingItemScreenWidget(selectedItem.id);
+    Widget widget = ShoppingSchedulerDetailScreen(selectedItem.id);
     MaterialPageRoute router = new MaterialPageRoute(builder: (ctxt) => widget);
     Navigator.push(context, router);
   }
 
-  void onClickDeleteIcon(ShoppingScheduleItem itemToDelete) {
+  void onClickDeleteIcon(ShoppingScheduler itemToDelete) {
     print('The user click on delete icon');
     _service.deleteSchuelde(itemToDelete);
     this.reloadState();

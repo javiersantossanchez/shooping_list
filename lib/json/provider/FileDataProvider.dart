@@ -1,18 +1,14 @@
 import 'package:path_provider/path_provider.dart';
-import 'package:shoopinglist/dtos/ShoppingItem.dart';
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
+import 'package:shoopinglist/dtos/ShoppingScheduler.dart';
 import 'package:shoopinglist/parsers/FileParser.dart';
 import 'package:shoopinglist/parsers/IShoppingScheduleParse.dart';
 
-import 'IDataProvider.dart';
+import '../../providers/ShoppingSchedulerProvider.dart';
 
-import 'package:http/http.dart' as http;
-
-
-class FileDataProvider implements IDataProvider{
+class FileDataProvider extends ShoppingSchedulerProvider{
 
   static final FileDataProvider _instance = new FileDataProvider._internal();
 
@@ -20,7 +16,6 @@ class FileDataProvider implements IDataProvider{
 
   final IShoppingScheduleParse _parser =  new FileParser();
 
-  List<ShoppingScheduleItem> _info = new List();
 
   factory FileDataProvider() {
     return _instance;
@@ -40,45 +35,27 @@ class FileDataProvider implements IDataProvider{
 
 
 
-  Future<List<ShoppingScheduleItem>> getScheduler() async {
+  Future<List<ShoppingScheduler>> getShoppingSchedulerList() async {
     final file = await _localFile;
 
-    if (_info == null || _info.isEmpty) {
+    if (shoppingSchedulerList == null || shoppingSchedulerList.isEmpty) {
       if( !file.existsSync() ){
         file.createSync();
       }
       String contents = await file.readAsString();
-      List<ShoppingScheduleItem> itemsFromFile = _parser.parser(contents);
+      List<ShoppingScheduler> itemsFromFile = _parser.parser(contents);
       if(itemsFromFile != null) {
-        _info.addAll(itemsFromFile);
+        shoppingSchedulerList.addAll(itemsFromFile);
       }
     }
-
-
-
-    return _info;
+    return shoppingSchedulerList;
   }
 
-  Future<List<ShoppingItem>> getShoppingList(int id) async {
-    ShoppingScheduleItem v = _info.firstWhere((item) => item.id == id);
 
-    return v.shoppingList;
-  }
-
-  Future<void> createNewShoppingList(
-      ShoppingScheduleItem newShoppingList) async {
-    this._info.add(newShoppingList);
-    this.updateShoppingList();
-  }
-
-  Future<void> deleteShoppingList(ShoppingScheduleItem shoppingListToDelete) async{
-    this._info.remove(shoppingListToDelete);
-    this.updateShoppingList();
-  }
 
   Future<void> updateShoppingList() async{
     final file = await _localFile;
     //TODO: I need move this json.encode statement to parse class
-    file.writeAsStringSync(json.encode(this._info));
+    file.writeAsStringSync(json.encode(this.shoppingSchedulerList));
   }
 }

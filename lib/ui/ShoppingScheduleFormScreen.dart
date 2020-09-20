@@ -1,42 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shoopinglist/dtos/ShoppingItem.dart';
+import 'package:shoopinglist/dtos/Product.dart';
 import 'package:shoopinglist/services/ShoppingListService.dart';
 
-import 'dtos/ShoppingScheduleItem.dart';
+import '../dtos/ShoppingScheduler.dart';
 
-class ShoppingScheduleFormWidget extends StatefulWidget {
+class ShoppingScheduleFormScreen extends StatefulWidget {
   @override
   ShoppingScheduleFormState createState() => ShoppingScheduleFormState();
 }
 
-class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
+class ShoppingScheduleFormState extends State<ShoppingScheduleFormScreen> {
   DateTime _selectedDate;
 
-  List<ShoppingItem> _items;
+  List<Product> _items;
 
-  List<ShoppingItem> _selectedItems;
+  List<Product> _selectedItems;
 
-  ShoppingScheduleItem scheduleItem;
+  ShoppingScheduler scheduleItem;
+
+  final ShoppingListService _service = ShoppingListService();
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  void saveSchedule (){
-    ShoppingListService service = ShoppingListService();
-    service.createSchuelde(_selectedDate, _selectedItems);
 
+  void saveSchedule (){
+    List<Product> items = new List();
+    for (var i = 0; i < _selectedItems.length; i++) {
+      items.add(new Product.Unselected(_selectedItems[i].description, _selectedItems[i].id));
+    }
+    _service.createSchuelde(_selectedDate, items);
   }
 
 
   @override
   void initState() {
     super.initState();
-    ShoppingListService service = ShoppingListService();
-    service.getDefaultShoppingList().then((result) => setState(() {this._items = result;}));
-
-
-
+    _service.getDefaultShoppingList().then((result) => setState(() {this._items = result;}));
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -58,7 +59,8 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
       return new Container();
     }
     Divider div = new Divider(color: Colors.blue,);
-    return new Expanded(
+    return new //Column(children: <Widget>[
+      Expanded(
         child: ListView.separated(
           separatorBuilder: (context, index) => div,
           padding: const EdgeInsets.all(16.0),
@@ -66,13 +68,14 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
           itemBuilder: (context, index) => _buildRow(_items[index], context)
         )
       );
+    //]);
   }
 
   // #docregion _buildRow
-  Widget _buildRow(ShoppingItem pair, BuildContext context) {
+  Widget _buildRow(Product pair, BuildContext context) {
     return ListTile(
       title: Text(
-        pair.description,
+        pair.description == null? '': pair.description,
         style: _biggerFont,
       ),
       trailing: Icon(
@@ -125,21 +128,18 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('DateTime Picker'),
+        title: Text('Product Catalog'),
       ),
       body: Column(children: <Widget>[
         _getDatePickerView(),
         _getListItemView(),
         RaisedButton(
           onPressed: this._selectedDate == null? null : ()=> onClickSaveButton(context),
-          child: Text(
-        'Save',
+          child: Text('Save',
+          ),
         ),
-    )
         //      ,)
       ]),
     );
   }
-
-
 }

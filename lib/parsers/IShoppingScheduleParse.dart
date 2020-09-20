@@ -1,7 +1,7 @@
-import 'package:shoopinglist/dtos/ShoppingScheduleItem.dart';
+import 'package:shoopinglist/dtos/ShoppingScheduler.dart';
 
 abstract class IShoppingScheduleParse {
 
-  List<ShoppingScheduleItem> parser (String text);
+  List<ShoppingScheduler> parser (String text);
 
 }
