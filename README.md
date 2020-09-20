@@ -20,6 +20,9 @@ All the data is store inside the device's file system. in future I want store th
 
 ![new-list-form!](/screenshots/new-list-form.png "new-list-form")
 
+![Delete a product!](/screenshots/delete-product-dialog.png "Delete a product")
+
+![Create a new product!](/screenshots/create-new-product-dialog.png "Create a new product")
 ---
 A few resources to find information about Flutter:
 

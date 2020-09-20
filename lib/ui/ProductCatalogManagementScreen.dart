@@ -139,7 +139,7 @@ class ProductCatalogManagementScreenState
       context: context,
       builder: (BuildContext context) {
           return SimpleDialog(
-          title: const Text('Create a new item'),
+          title: const Text('Create a new product'),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0))
           ),
