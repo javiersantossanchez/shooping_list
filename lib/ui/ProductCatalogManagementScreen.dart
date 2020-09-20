@@ -45,22 +45,17 @@ class ProductCatalogManagementScreenState
         size: 30,
       ),
       onTap: () {
-        ShoppingListService service = ShoppingListService();
-        service.deleteProduct(pair.id)
-            .then(( productWasCreated ) => setState(() {}));
-
+        showConfirmDialogToDeleteProduct(context,pair);
       },
     );
   }
 
   Widget _buildBody() {
-    print('Reload list');
     return Column(children: <Widget>[
       FutureBuilder<List<Product>>(
           future: _service.getDefaultShoppingList(),
           builder:
               (BuildContext context, AsyncSnapshot<List<Product>> productList) {
-            print(productList.hasData);
             if (productList.hasData) {
               return _buildListingView(productList.data);
             } else {
@@ -105,8 +100,34 @@ class ProductCatalogManagementScreenState
     showDialogToCreateNewProduct(context);
   }
 
-  Widget  _buildDialogBody(){
 
+  void showConfirmDialogToDeleteProduct(BuildContext context, Product product){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Delete Product"),
+          content: Text("Are you sure you want to delete the product?"),
+          actions: [
+            FlatButton(
+              child: Text("OK"),
+              onPressed:  () {
+                _service.deleteProduct(product.id)
+                    .then(( productWasCreated ) {
+                      setState(() {});
+                      Navigator.pop(context, true);
+                    }
+                );
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed:  () { Navigator.pop(context, true); },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void showDialogToCreateNewProduct(BuildContext context) {
@@ -152,7 +173,7 @@ class ProductCatalogManagementScreenState
                 Navigator.pop(context, true);
               },
               child: Text(
-                "Close",
+                "Cancel",
               ),
             ),
             ])
