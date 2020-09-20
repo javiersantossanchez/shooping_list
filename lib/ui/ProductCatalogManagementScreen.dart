@@ -27,7 +27,7 @@ class ProductCatalogManagementScreenState
     return new Expanded(
         child: ListView.separated(
             separatorBuilder: (context, index) => div,
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 56),
             itemCount: productLst.length,
             itemBuilder: (context, index) =>
                 _buildRow(productLst[index], context)));
@@ -87,7 +87,9 @@ class ProductCatalogManagementScreenState
         title: Text('Product Management'),
       ),
       body: _buildBody(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
+
         child: Icon(Icons.add),
         onPressed: () => this.onClickAddButton(context),
       ),
