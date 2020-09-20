@@ -130,7 +130,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('DateTime Picker'),
+        title: Text('Product Catalog'),
       ),
       body: Column(children: <Widget>[
         _getDatePickerView(),
@@ -142,9 +142,6 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormScreen> {
         ),
         //      ,)
       ]),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

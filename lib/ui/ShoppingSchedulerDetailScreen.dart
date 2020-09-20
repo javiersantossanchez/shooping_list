@@ -24,7 +24,7 @@ class ShoppingSchedulerDetailScreenState extends State<ShoppingSchedulerDetailSc
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shopping day'),
+        title: Text('Product List'),
       ),
       body:  Column(children: <Widget>[
         ProductListingWidget(this._id),
