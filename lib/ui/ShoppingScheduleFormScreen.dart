@@ -128,7 +128,7 @@ class ShoppingScheduleFormState extends State<ShoppingScheduleFormScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Catalog'),
+        title: Text('Create new shopping list'),
       ),
       body: Column(children: <Widget>[
         _getDatePickerView(),

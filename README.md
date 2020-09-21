@@ -14,11 +14,11 @@ All the data is store inside the device's file system. in future I want store th
 
 ## Screenshots
 
-![List!](/screenshots/list.png "List")
+![List!](/screenshots/shopping-list-catalog.png "List")
 
 ![detailed-view!](/screenshots/detailed-view.png "detailed-view")
 
-![new-list-form!](/screenshots/new-list-form.png "new-list-form")
+![new-shoping-list-form.png!](/screenshots/new-list-form.png "new-list-form")
 
 ![Delete a product!](/screenshots/delete-product-dialog.png "Delete a product")
 

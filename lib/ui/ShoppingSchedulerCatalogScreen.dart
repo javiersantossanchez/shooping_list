@@ -37,7 +37,7 @@ class ShoppingSchedulerCatalogScreenState extends State<ShoppingSchedulerCatalog
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shopping Scheduler'),
+        title: Text('Shopping list catalog'),
         actions: <Widget>[
           getAdminMenu(context),
         ],
