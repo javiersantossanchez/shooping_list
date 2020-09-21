@@ -18,7 +18,7 @@ All the data is store inside the device's file system. in future I want store th
 
 ![detailed-view!](/screenshots/detailed-view.png "detailed-view")
 
-![new-shoping-list-form.png!](/screenshots/new-list-form.png "new-list-form")
+![new-shoping-list-form.png!](/screenshots/product-catalog.png "Product Catalog")
 
 ![Delete a product!](/screenshots/delete-product-dialog.png "Delete a product")
 
